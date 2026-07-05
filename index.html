@@ -6,474 +6,130 @@
     <title>CO₂ Entertainment Impact</title>
     <meta
       name="description"
-      content="Sito didattico desktop per confrontare l'impatto climatico stimato di dieta, intrattenimento e viaggio intercontinentale."
+      content="Scala didattica desktop per confrontare dieta, attività, festival, Kappa FuturFestival e viaggi in kg CO₂e."
     />
     <style>
-      .static-shell {
-        min-height: 100vh;
-        padding: 40px;
-        color: #16201b;
-        background:
-          radial-gradient(circle at top left, rgba(74, 123, 78, 0.16), transparent 34rem),
-          radial-gradient(circle at 85% 10%, rgba(235, 181, 87, 0.18), transparent 28rem),
-          linear-gradient(180deg, #f7f5ef 0%, #ece7d8 100%);
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
-
-      .static-page {
-        max-width: 1280px;
-        margin: 0 auto;
-      }
-
-      .static-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.55fr);
-        gap: 24px;
-        align-items: end;
-        margin-bottom: 24px;
-      }
-
-      .static-kicker,
-      .static-label {
-        display: inline-flex;
-        width: fit-content;
-        border-radius: 999px;
-        background: #dce8d8;
-        color: #2f5f35;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        padding: 7px 10px;
-        text-transform: uppercase;
-      }
-
-      .static-hero h1 {
-        max-width: 860px;
-        margin: 14px 0 16px;
-        font-size: clamp(52px, 7vw, 104px);
-        line-height: 0.92;
-        letter-spacing: -0.08em;
-      }
-
-      .static-hero p,
-      .static-card p,
-      .static-card small,
-      .static-note li {
-        color: #58635a;
-        line-height: 1.55;
-      }
-
-      .static-hero p {
-        max-width: 720px;
-        margin: 0;
-        font-size: 18px;
-      }
-
-      .static-card {
-        border: 1px solid rgba(22, 32, 27, 0.12);
-        border-radius: 28px;
-        background: rgba(255, 255, 255, 0.78);
-        box-shadow: 0 24px 70px rgba(32, 42, 34, 0.08);
-      }
-
-      .static-total-card {
-        display: grid;
-        gap: 12px;
-        padding: 24px;
-      }
-
-      .static-total-card strong {
-        font-size: clamp(36px, 4vw, 64px);
-        line-height: 0.95;
-        letter-spacing: -0.07em;
-      }
-
-      .static-dashboard {
-        display: grid;
-        grid-template-columns: minmax(360px, 0.9fr) minmax(0, 1.35fr);
-        gap: 18px;
-        align-items: start;
-      }
-
-      .static-column {
-        display: grid;
-        gap: 18px;
-      }
-
-      .static-card-inner {
-        padding: 22px;
-      }
-
-      .static-card h2 {
-        margin: 12px 0 10px;
-        font-size: clamp(24px, 2.5vw, 36px);
-        line-height: 1.02;
-        letter-spacing: -0.045em;
-      }
-
-      .static-options,
-      .static-activities,
-      .static-chart {
-        display: grid;
-        gap: 12px;
-        margin-top: 18px;
-      }
-
-      .static-diet,
-      .static-activity {
-        width: 100%;
-        border: 1px solid rgba(22, 32, 27, 0.12);
-        border-radius: 20px;
-        background: #ffffff;
-        color: inherit;
-        cursor: pointer;
-        font: inherit;
-      }
-
-      .static-diet {
-        display: grid;
-        gap: 8px;
-        padding: 16px;
-        text-align: left;
-      }
-
-      .static-diet[aria-pressed="true"] {
-        background: #1f3c28;
-        color: #f7f5ef;
-      }
-
-      .static-diet[aria-pressed="true"] small {
-        color: #dce8d8;
-      }
-
-      .static-diet span,
-      .static-activity strong,
-      .static-bar-heading span {
-        font-weight: 850;
-      }
-
-      .static-diet strong {
-        font-size: 22px;
-      }
-
-      .static-activity {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        gap: 12px;
-        align-items: start;
-        padding: 14px;
-      }
-
-      .static-activity input {
-        width: 20px;
-        height: 20px;
-        margin-top: 2px;
-        accent-color: #2f5f35;
-      }
-
-      .static-activity span {
-        display: grid;
-        gap: 4px;
-      }
-
-      .static-activity em {
-        color: #2f5f35;
-        font-style: normal;
-        font-weight: 900;
-        white-space: nowrap;
-      }
-
-      .static-summary {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 24px;
-        align-items: center;
-      }
-
-      .static-summary h2 {
-        margin: 14px 0 8px;
-        font-size: clamp(42px, 5vw, 74px);
-      }
-
-      .static-score {
-        display: grid;
-        place-items: center;
-        width: 132px;
-        height: 132px;
-        border-radius: 50%;
-        background: #16201b;
-        color: #f8f4e9;
-      }
-
-      .static-score span {
-        font-size: 48px;
-        font-weight: 900;
-        line-height: 0.85;
-      }
-
-      .static-score small {
-        color: #dce8d8;
-        font-weight: 800;
-      }
-
-      .static-bar-row {
-        display: grid;
-        gap: 8px;
-      }
-
-      .static-bar-heading {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-      }
-
-      .static-bar-heading strong {
-        color: #2f5f35;
-        white-space: nowrap;
-      }
-
-      .static-bar-track {
-        height: 16px;
-        overflow: hidden;
-        border-radius: 999px;
-        background: rgba(31, 60, 40, 0.1);
-      }
-
-      .static-bar-fill {
-        height: 100%;
-        min-width: 3%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #2f5f35, #8fa35f);
-      }
-
-      .static-compare .static-bar-fill {
-        background: linear-gradient(90deg, #2f5f35, #d99b45);
-      }
-
-      .static-insights {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px;
-        margin-top: 18px;
-      }
-
-      .static-dark {
-        background: #16201b;
-        color: #f7f5ef;
-      }
-
-      .static-dark p {
-        color: #dce8d8;
-      }
-
-      .static-note {
-        margin-top: 18px;
-      }
-
-      .static-note ol {
-        margin: 0;
-        padding-left: 22px;
-      }
-
-      @media (max-width: 980px) {
-        .static-shell {
-          padding: 24px;
-        }
-
-        .static-hero,
-        .static-dashboard,
-        .static-insights {
-          grid-template-columns: 1fr;
-        }
-      }
+      body { margin: 0; min-width: 320px; background: linear-gradient(180deg, #faf7ef 0%, #eee6d5 100%); color: #171f1a; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      button, input { font: inherit; }
+      .fallback { width: min(1440px, calc(100% - 56px)); margin: 0 auto; padding: 44px 0 72px; }
+      .hero { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: end; padding: 32px 0 28px; }
+      .eyebrow, .label { display: inline-flex; width: fit-content; border-radius: 999px; background: rgba(47, 95, 53, 0.1); color: #2f5f35; font-size: 12px; font-weight: 850; letter-spacing: .08em; padding: 7px 10px; text-transform: uppercase; }
+      h1, h2, h3, p { margin: 0; }
+      h1 { max-width: 960px; margin-top: 18px; font-size: clamp(56px, 6.5vw, 106px); line-height: .91; letter-spacing: -.085em; }
+      h2 { font-size: clamp(24px, 2vw, 36px); line-height: 1.02; letter-spacing: -.045em; }
+      p, small, span { line-height: 1.52; } p, small { color: #60665f; }
+      .hero p { max-width: 760px; margin-top: 18px; font-size: 17px; }
+      .panel, .card, .source { border: 1px solid rgba(23,31,26,.1); border-radius: 32px; background: rgba(255,255,255,.58); box-shadow: 0 24px 70px rgba(23,31,26,.06); }
+      .summary { display: grid; gap: 12px; padding: 24px; }
+      .summary strong { font-size: clamp(32px, 3.7vw, 56px); letter-spacing: -.07em; line-height: .95; }
+      .grid { display: grid; grid-template-columns: minmax(400px,.74fr) minmax(0,1.44fr); gap: 18px; align-items: start; }
+      .controls, .scale, .sources { padding: 22px; }
+      .controls { display: grid; gap: 12px; }
+      .section-title { display: grid; gap: 10px; margin-bottom: 18px; }
+      .card { border-radius: 24px; padding: 14px; }
+      .card.active { border-color: rgba(47,95,53,.42); background: rgba(255,255,255,.76); }
+      .toggle { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 12px; align-items: start; cursor: pointer; }
+      .toggle input { width: 20px; height: 20px; margin-top: 3px; accent-color: #2f5f35; }
+      .toggle > span { display: grid; gap: 3px; }
+      .toggle small, .row small { color: #2f5f35; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+      .toggle strong, .row strong { font-weight: 950; letter-spacing: -.025em; }
+      .toggle em { font-style: normal; font-weight: 950; white-space: nowrap; }
+      .segmented { display: grid; gap: 6px; margin-top: 12px; }
+      .segmented.diets { grid-template-columns: repeat(5, minmax(0,1fr)); }
+      .segmented.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .segmented.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .segmented button { border: 1px solid rgba(23,31,26,.1); border-radius: 999px; background: rgba(255,255,255,.72); color: #4f5750; font-size: 13px; font-weight: 850; padding: 8px 9px; cursor: pointer; }
+      .segmented button[aria-pressed="true"] { border-color: #2f5f35; background: #171f1a; color: #faf7ef; }
+      .micro { margin-top: 12px; color: #60665f; font-size: 14px; }
+      .scale { display: grid; gap: 18px; }
+      .scale-head { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: start; }
+      .total { min-width: 220px; border-radius: 26px; background: #171f1a; color: #faf7ef; padding: 18px; }
+      .total span { color: #cbd7c7; font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+      .total strong { display: block; font-size: clamp(28px, 2.8vw, 44px); letter-spacing: -.06em; line-height: .95; margin-top: 8px; }
+      .chart { display: grid; gap: 10px; }
+      .row { display: grid; grid-template-columns: minmax(260px,.34fr) minmax(0,.66fr); gap: 18px; align-items: center; border: 1px solid rgba(23,31,26,.08); border-radius: 22px; background: rgba(255,255,255,.54); padding: 14px; }
+      .row-copy { display: grid; gap: 3px; }
+      .row-copy span { color: #60665f; font-size: 14px; }
+      .value { font-weight: 950; text-align: right; }
+      .track { width: 100%; height: 14px; overflow: hidden; border-radius: 999px; background: rgba(23,31,26,.08); margin: 7px 0; }
+      .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #2f5f35, #d6a14d); }
+      .sources { margin-top: 18px; }
+      .source-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
+      .source { display: grid; gap: 10px; border-radius: 22px; padding: 16px; }
+      .source a { color: #2f5f35; font-weight: 900; }
+      @media (max-width:1120px){ .fallback{width:min(100% - 32px,960px)} .hero,.grid,.scale-head,.source-grid{grid-template-columns:1fr} .row{grid-template-columns:1fr} .value{text-align:left} }
     </style>
   </head>
   <body>
     <div id="root">
-      <div class="static-shell" data-static-app>
-        <main class="static-page">
-          <section class="static-hero" aria-labelledby="static-title">
-            <div>
-              <span class="static-kicker">Sito didattico desktop</span>
-              <h1 id="static-title">Capire la CO₂ delle scelte quotidiane</h1>
-              <p>
-                Una dashboard didattica per confrontare dieta, intrattenimento, outdoor e un viaggio intercontinentale. I valori sono dimostrativi e servono a spiegare scala e ordine di grandezza.
-              </p>
-            </div>
-
-            <aside class="static-card static-total-card" aria-label="Risultato principale">
-              <span class="static-label">Scenario attivo</span>
-              <strong data-total-label>42,1 kg CO₂e</strong>
-              <p><span data-trip-percent>2,3</span>% di un viaggio intercontinentale A/R.</p>
-            </aside>
+      <main class="fallback" data-fallback>
+        <section class="hero">
+          <div>
+            <span class="eyebrow">CO₂e cultural scale</span>
+            <h1>Una scala pulita per leggere impatti molto diversi.</h1>
+            <p>Fallback statico desktop: se la build React non è ancora servita da GitHub Pages, questa versione mantiene Kappa configurabile per durata e profilo.</p>
+          </div>
+          <aside class="panel summary"><span class="label">Totale scala</span><strong data-total>0 kg CO₂e</strong><p data-count></p></aside>
+        </section>
+        <section class="grid">
+          <aside class="panel controls">
+            <div class="section-title"><span class="label">Selezione</span><h2>Oggetti della scala</h2><p>Ogni card contiene le proprie opzioni.</p></div>
+            <div data-controls></div>
+          </aside>
+          <section class="panel scale">
+            <div class="scale-head"><div><span class="label">Scala principale</span><h2>Confronto in kg CO₂e</h2><p>Le barre sono ordinate dal valore più alto al più basso.</p></div><div class="total"><span>Totale attivo</span><strong data-total-2>0 kg CO₂e</strong></div></div>
+            <div class="chart" data-chart></div>
           </section>
-
-          <section class="static-dashboard" aria-label="Dashboard didattica interattiva">
-            <div class="static-column">
-              <article class="static-card static-card-inner">
-                <span class="static-label">1. Dieta</span>
-                <h2>Scegli uno stile alimentare</h2>
-                <p>Il valore settimanale cambia il totale e i grafici.</p>
-                <div class="static-options" data-diet-options></div>
-              </article>
-
-              <article class="static-card static-card-inner">
-                <span class="static-label">2. Attività</span>
-                <h2>Seleziona il tempo libero</h2>
-                <p>Le checkbox sono native e aggiornano subito lo scenario.</p>
-                <div class="static-activities" data-activity-options></div>
-              </article>
-            </div>
-
-            <div class="static-column">
-              <article class="static-card static-card-inner static-summary">
-                <div>
-                  <span class="static-label">Totale stimato</span>
-                  <h2 data-summary-total>42,1 kg CO₂e</h2>
-                  <p data-summary-copy>Dieta flexitariana + attività selezionate.</p>
-                </div>
-                <div class="static-score" aria-hidden="true">
-                  <span data-score>42</span>
-                  <small>kg</small>
-                </div>
-              </article>
-
-              <article class="static-card static-card-inner">
-                <span class="static-label">Grafico 1</span>
-                <h2>Composizione dello scenario</h2>
-                <div class="static-chart" data-breakdown-chart></div>
-              </article>
-
-              <article class="static-card static-card-inner">
-                <span class="static-label">Grafico 2</span>
-                <h2>Confronto con viaggio intercontinentale</h2>
-                <p>Benchmark didattico: 1.800 kg CO₂e per un A/R intercontinentale.</p>
-                <div class="static-chart static-compare" data-comparison-chart></div>
-              </article>
-            </div>
-          </section>
-
-          <section class="static-insights" aria-label="Insight didattici">
-            <article class="static-card static-card-inner">
-              <span class="static-label">Lettura rapida</span>
-              <h2 data-main-insight>Attività più pesante: trekking</h2>
-              <p>Il punto didattico non è solo il totale, ma capire quale scelta cambia davvero il risultato.</p>
-            </article>
-
-            <article class="static-card static-card-inner static-dark">
-              <span class="static-label">Scala</span>
-              <h2 data-weeks>43 settimane simili</h2>
-              <p>Quante settimane come questa servirebbero per raggiungere il benchmark del viaggio intercontinentale.</p>
-            </article>
-          </section>
-
-          <section class="static-card static-card-inner static-note" aria-label="Note metodologiche">
-            <h2>Note metodologiche</h2>
-            <ol>
-              <li>Numeri dimostrativi: servono a testare UX, gerarchia e comprensione.</li>
-              <li>Il benchmark di viaggio va sostituito con una fonte documentata nella versione finale.</li>
-              <li>Il layout è desktop-first, con adattamento responsive solo sotto tablet.</li>
-            </ol>
-          </section>
-        </main>
-      </div>
+        </section>
+        <section class="panel sources" id="sources"><div class="section-title"><span class="label">Fonti</span><h2>Fonti usate per i calcoli</h2><p>Fonti metodologiche e benchmark usati nel prototipo.</p></div><div class="source-grid" data-sources></div></section>
+      </main>
     </div>
-
     <script>
-      (function () {
-        const diets = [
-          { key: 'vegan', label: 'Vegana', description: 'Solo alimenti vegetali.', value: 14 },
-          { key: 'vegetarian', label: 'Vegetariana', description: 'Vegetale con latticini e uova.', value: 18 },
-          { key: 'flexitarian', label: 'Flexitariana', description: 'Prevalenza vegetale, pollo e suino moderati.', value: 23 },
-          { key: 'omnivore', label: 'Onnivora', description: 'Dieta mista con carne, pesce e latticini.', value: 31 },
-          { key: 'carnivore', label: 'Carnivora', description: 'Forte prevalenza di prodotti animali.', value: 45 },
+      (() => {
+        const sources = [
+          ['Knowledge interna — lista fonti utili CO₂e','IPCC EFDB, Our World in Data, ISPRA, ICAO, DEFRA, EcoPassenger, AGF, Vision:2025, JRC, Ecoinvent.','https://www.ipcc-nggip.iges.or.jp/EFDB/'],
+          ['Scarborough et al. — impronta diete','Fattori dieta in kg CO₂e/giorno convertiti in settimana.','https://en.wikipedia.org/wiki/Low-carbon_diet'],
+          ['ICAO Carbon Emissions Calculator','Metodo per voli passeggero e benchmark di viaggio.','https://www.icao.int/environmental-protection/CarbonOffset/Pages/default.aspx'],
+          ['A Greener Future / AGF','Riferimento per eventi e festival.','https://www.agreenerfuture.com/']
         ]
-
-        const activities = [
-          { key: 'gaming', label: 'Weekend gaming online', description: 'Due giornate con sessioni online.', value: 4.8 },
-          { key: 'climbing', label: 'Giornata ad arrampicare', description: 'Palestra o falesia vicina.', value: 6.2 },
-          { key: 'trekking', label: 'Giornata di trekking', description: 'Escursione giornaliera regionale.', value: 8.1 },
-        ]
-
-        const trip = 1800
-        let selectedDiet = 'flexitarian'
-        let selectedActivities = ['gaming', 'climbing', 'trekking']
-
-        const formatKg = (value) => `${value.toFixed(1).replace('.', ',')} kg CO₂e`
-        const width = (value, max) => `${Math.max((value / max) * 100, 3)}%`
-
-        function renderBar(row, max) {
-          return `
-            <div class="static-bar-row">
-              <div class="static-bar-heading"><span>${row.label}</span><strong>${formatKg(row.value)}</strong></div>
-              <div class="static-bar-track"><div class="static-bar-fill" style="width:${width(row.value, max)}"></div></div>
-              <small>${row.detail}</small>
-            </div>
-          `
+        const diets = { vegan:['Vegana',20.2], vegetarian:['Vegetariana',26.7], flexitarian:['Flexitariana',32.7], omnivore:['Onnivora',39.4], carnivore:['Carnivora',50.3] }
+        const profiles = { local:['Locale',13,'Torino o area vicina.'], national:['Nazionale',78,'Italia, treno/auto + evento.'], international:['Internazionale',408,'Estero con volo europeo + evento.'] }
+        const state = { diet:'flexitarian', kappaDays:3, kappaProfile:'international', on:new Set(['diet','gaming','climbing','trekking','kappa','flightIntercontinental']) }
+        const kg = v => `${v.toFixed(1).replace('.', ',')} kg CO₂e`
+        const itemData = () => {
+          const kappa = profiles[state.kappaProfile][1] + 12 * state.kappaDays
+          return [
+            ['diet',`Dieta ${diets[state.diet][0].toLowerCase()} — 1 settimana`,'Dieta',diets[state.diet][1],'Valore giornaliero × 7.'],
+            ['gaming','Weekend gaming online','Attività',2.4,'Proxy digitale.'],
+            ['climbing','Arrampicata','Attività',6.2,'Driver principale: trasporto.'],
+            ['trekking','Trekking','Attività',8.1,'Proxy trasporto regionale.'],
+            ['kappa',`Kappa FuturFestival — ${profiles[state.kappaProfile][0].toLowerCase()}, ${state.kappaDays} ${state.kappaDays === 1 ? 'giorno':'giorni'}`,'Festival',kappa,`${profiles[state.kappaProfile][1]} kg viaggio + 12 kg/giorno × ${state.kappaDays}.`],
+            ['festivalLocal','Festival locale','Festival',18,'6 kg viaggio + 12 kg/giorno.'],
+            ['lowCarbonEvent','Evento low-carbon','Festival',6,'Scenario didattico a vincoli forti.'],
+            ['flightEurope','Volo europeo A/R','Viaggio',350,'Benchmark dimostrativo.'],
+            ['flightIntercontinental','Volo intercontinentale A/R','Viaggio',1800,'Benchmark dimostrativo.']
+          ]
         }
-
-        function render() {
-          const diet = diets.find((item) => item.key === selectedDiet) || diets[2]
-          const activeActivities = activities.filter((item) => selectedActivities.includes(item.key))
-          const activityTotal = activeActivities.reduce((sum, item) => sum + item.value, 0)
-          const total = diet.value + activityTotal
-          const percent = (total / trip) * 100
-          const weeks = Math.round(trip / Math.max(total, 0.1))
-          const highest = activeActivities.slice().sort((a, b) => b.value - a.value)[0]
-
-          document.querySelector('[data-total-label]').textContent = formatKg(total)
-          document.querySelector('[data-summary-total]').textContent = formatKg(total)
-          document.querySelector('[data-score]').textContent = Math.round(total)
-          document.querySelector('[data-trip-percent]').textContent = percent.toFixed(1).replace('.', ',')
-          document.querySelector('[data-summary-copy]').textContent = `${diet.label}${activeActivities.length ? ' + ' + activeActivities.map((item) => item.label).join(' + ') : ' senza attività extra'}`
-          document.querySelector('[data-main-insight]').textContent = highest ? `Attività più pesante: ${highest.label}` : 'Nessuna attività extra selezionata'
-          document.querySelector('[data-weeks]').textContent = `${weeks} settimane simili`
-
-          document.querySelector('[data-diet-options]').innerHTML = diets.map((item) => `
-            <button class="static-diet" type="button" data-diet="${item.key}" aria-pressed="${item.key === selectedDiet}">
-              <span>${item.label}</span>
-              <strong>${formatKg(item.value)}</strong>
-              <small>${item.description}</small>
-            </button>
-          `).join('')
-
-          document.querySelector('[data-activity-options]').innerHTML = activities.map((item) => `
-            <label class="static-activity">
-              <input type="checkbox" data-activity="${item.key}" ${selectedActivities.includes(item.key) ? 'checked' : ''} />
-              <span><strong>${item.label}</strong><small>${item.description}</small></span>
-              <em>${formatKg(item.value)}</em>
-            </label>
-          `).join('')
-
-          document.querySelector('[data-breakdown-chart]').innerHTML = [
-            { label: 'Dieta selezionata', value: diet.value, detail: diet.label },
-            { label: 'Attività selezionate', value: activityTotal, detail: `${activeActivities.length} attività` },
-          ].map((row) => renderBar(row, total)).join('')
-
-          document.querySelector('[data-comparison-chart]').innerHTML = [
-            { label: 'Tuo scenario', value: total, detail: 'Dieta + attività' },
-            { label: 'Viaggio intercontinentale A/R', value: trip, detail: 'Benchmark dimostrativo' },
-          ].map((row) => renderBar(row, trip)).join('')
-
-          document.querySelectorAll('[data-diet]').forEach((button) => {
-            button.addEventListener('click', () => {
-              selectedDiet = button.getAttribute('data-diet') || selectedDiet
-              render()
-            })
-          })
-
-          document.querySelectorAll('[data-activity]').forEach((checkbox) => {
-            checkbox.addEventListener('change', () => {
-              const key = checkbox.getAttribute('data-activity')
-              if (!key) return
-              selectedActivities = checkbox.checked
-                ? Array.from(new Set([...selectedActivities, key]))
-                : selectedActivities.filter((item) => item !== key)
-              render()
-            })
-          })
+        function render(){
+          const data = itemData()
+          const active = data.filter(x => state.on.has(x[0])).sort((a,b)=>b[3]-a[3])
+          const total = active.reduce((s,x)=>s+x[3],0)
+          const max = Math.max(...active.map(x=>x[3]),1)
+          document.querySelector('[data-total]').textContent = kg(total)
+          document.querySelector('[data-total-2]').textContent = kg(total)
+          document.querySelector('[data-count]').textContent = `${active.length} elementi attivi. Kappa: ${state.kappaDays} ${state.kappaDays === 1 ? 'giorno':'giorni'}.`
+          document.querySelector('[data-controls]').innerHTML = `
+            <section class="card ${state.on.has('diet')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="diet" ${state.on.has('diet')?'checked':''}/><span><small>Dieta</small><strong>Dieta ${diets[state.diet][0].toLowerCase()} — 1 settimana</strong></span><em>${kg(diets[state.diet][1])}</em></label><div class="segmented diets">${Object.entries(diets).map(([k,v])=>`<button data-diet="${k}" aria-pressed="${state.diet===k}">${v[0]}</button>`).join('')}</div></section>
+            ${['gaming','climbing','trekking'].map(k=>{const x=data.find(i=>i[0]===k);return `<section class="card ${state.on.has(k)?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="${k}" ${state.on.has(k)?'checked':''}/><span><small>${x[2]}</small><strong>${x[1]}</strong></span><em>${kg(x[3])}</em></label></section>`}).join('')}
+            <section class="card ${state.on.has('kappa')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="kappa" ${state.on.has('kappa')?'checked':''}/><span><small>Kappa FuturFestival</small><strong>${data.find(x=>x[0]==='kappa')[1]}</strong><span>${profiles[state.kappaProfile][2]}</span></span><em>${kg(data.find(x=>x[0]==='kappa')[3])}</em></label><div class="segmented two"><button data-days="1" aria-pressed="${state.kappaDays===1}">1 giorno</button><button data-days="3" aria-pressed="${state.kappaDays===3}">3 giorni</button></div><div class="segmented three">${Object.entries(profiles).map(([k,v])=>`<button data-profile="${k}" aria-pressed="${state.kappaProfile===k}">${v[0]}</button>`).join('')}</div><p class="micro">${data.find(x=>x[0]==='kappa')[4]}</p></section>
+            ${['festivalLocal','lowCarbonEvent','flightEurope','flightIntercontinental'].map(k=>{const x=data.find(i=>i[0]===k);return `<section class="card ${state.on.has(k)?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="${k}" ${state.on.has(k)?'checked':''}/><span><small>${x[2]}</small><strong>${x[1]}</strong></span><em>${kg(x[3])}</em></label></section>`}).join('')}`
+          document.querySelector('[data-chart]').innerHTML = active.map(x=>`<article class="row"><div class="row-copy"><small>${x[2]}</small><strong>${x[1]}</strong><span>${x[4]}</span></div><div><div class="value">${kg(x[3])}</div><div class="track"><div class="fill" style="width:${Math.max(x[3]/max*100,2)}%"></div></div></div></article>`).join('')
+          document.querySelector('[data-sources]').innerHTML = sources.map(s=>`<article class="source"><h3>${s[0]}</h3><p>${s[1]}</p><a href="${s[2]}" target="_blank" rel="noreferrer">Apri fonte</a></article>`).join('')
+          document.querySelectorAll('[data-toggle]').forEach(el=>el.onchange=()=>{const k=el.dataset.toggle; el.checked?state.on.add(k):state.on.delete(k); render()})
+          document.querySelectorAll('[data-diet]').forEach(el=>el.onclick=()=>{state.diet=el.dataset.diet; render()})
+          document.querySelectorAll('[data-days]').forEach(el=>el.onclick=()=>{state.kappaDays=Number(el.dataset.days); render()})
+          document.querySelectorAll('[data-profile]').forEach(el=>el.onclick=()=>{state.kappaProfile=el.dataset.profile; render()})
         }
-
         render()
       })()
     </script>
