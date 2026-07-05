@@ -6,11 +6,477 @@
     <title>CO₂ Entertainment Impact</title>
     <meta
       name="description"
-      content="Mockup interattivo per confrontare l'impatto climatico stimato di dieta, weekend gaming, arrampicata e trekking."
+      content="Sito didattico desktop per confrontare l'impatto climatico stimato di dieta, intrattenimento e viaggio intercontinentale."
     />
+    <style>
+      .static-shell {
+        min-height: 100vh;
+        padding: 40px;
+        color: #16201b;
+        background:
+          radial-gradient(circle at top left, rgba(74, 123, 78, 0.16), transparent 34rem),
+          radial-gradient(circle at 85% 10%, rgba(235, 181, 87, 0.18), transparent 28rem),
+          linear-gradient(180deg, #f7f5ef 0%, #ece7d8 100%);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .static-page {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+
+      .static-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.55fr);
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 24px;
+      }
+
+      .static-kicker,
+      .static-label {
+        display: inline-flex;
+        width: fit-content;
+        border-radius: 999px;
+        background: #dce8d8;
+        color: #2f5f35;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        padding: 7px 10px;
+        text-transform: uppercase;
+      }
+
+      .static-hero h1 {
+        max-width: 860px;
+        margin: 14px 0 16px;
+        font-size: clamp(52px, 7vw, 104px);
+        line-height: 0.92;
+        letter-spacing: -0.08em;
+      }
+
+      .static-hero p,
+      .static-card p,
+      .static-card small,
+      .static-note li {
+        color: #58635a;
+        line-height: 1.55;
+      }
+
+      .static-hero p {
+        max-width: 720px;
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .static-card {
+        border: 1px solid rgba(22, 32, 27, 0.12);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 24px 70px rgba(32, 42, 34, 0.08);
+      }
+
+      .static-total-card {
+        display: grid;
+        gap: 12px;
+        padding: 24px;
+      }
+
+      .static-total-card strong {
+        font-size: clamp(36px, 4vw, 64px);
+        line-height: 0.95;
+        letter-spacing: -0.07em;
+      }
+
+      .static-dashboard {
+        display: grid;
+        grid-template-columns: minmax(360px, 0.9fr) minmax(0, 1.35fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .static-column {
+        display: grid;
+        gap: 18px;
+      }
+
+      .static-card-inner {
+        padding: 22px;
+      }
+
+      .static-card h2 {
+        margin: 12px 0 10px;
+        font-size: clamp(24px, 2.5vw, 36px);
+        line-height: 1.02;
+        letter-spacing: -0.045em;
+      }
+
+      .static-options,
+      .static-activities,
+      .static-chart {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .static-diet,
+      .static-activity {
+        width: 100%;
+        border: 1px solid rgba(22, 32, 27, 0.12);
+        border-radius: 20px;
+        background: #ffffff;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .static-diet {
+        display: grid;
+        gap: 8px;
+        padding: 16px;
+        text-align: left;
+      }
+
+      .static-diet[aria-pressed="true"] {
+        background: #1f3c28;
+        color: #f7f5ef;
+      }
+
+      .static-diet[aria-pressed="true"] small {
+        color: #dce8d8;
+      }
+
+      .static-diet span,
+      .static-activity strong,
+      .static-bar-heading span {
+        font-weight: 850;
+      }
+
+      .static-diet strong {
+        font-size: 22px;
+      }
+
+      .static-activity {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 12px;
+        align-items: start;
+        padding: 14px;
+      }
+
+      .static-activity input {
+        width: 20px;
+        height: 20px;
+        margin-top: 2px;
+        accent-color: #2f5f35;
+      }
+
+      .static-activity span {
+        display: grid;
+        gap: 4px;
+      }
+
+      .static-activity em {
+        color: #2f5f35;
+        font-style: normal;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .static-summary {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .static-summary h2 {
+        margin: 14px 0 8px;
+        font-size: clamp(42px, 5vw, 74px);
+      }
+
+      .static-score {
+        display: grid;
+        place-items: center;
+        width: 132px;
+        height: 132px;
+        border-radius: 50%;
+        background: #16201b;
+        color: #f8f4e9;
+      }
+
+      .static-score span {
+        font-size: 48px;
+        font-weight: 900;
+        line-height: 0.85;
+      }
+
+      .static-score small {
+        color: #dce8d8;
+        font-weight: 800;
+      }
+
+      .static-bar-row {
+        display: grid;
+        gap: 8px;
+      }
+
+      .static-bar-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .static-bar-heading strong {
+        color: #2f5f35;
+        white-space: nowrap;
+      }
+
+      .static-bar-track {
+        height: 16px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(31, 60, 40, 0.1);
+      }
+
+      .static-bar-fill {
+        height: 100%;
+        min-width: 3%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #2f5f35, #8fa35f);
+      }
+
+      .static-compare .static-bar-fill {
+        background: linear-gradient(90deg, #2f5f35, #d99b45);
+      }
+
+      .static-insights {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .static-dark {
+        background: #16201b;
+        color: #f7f5ef;
+      }
+
+      .static-dark p {
+        color: #dce8d8;
+      }
+
+      .static-note {
+        margin-top: 18px;
+      }
+
+      .static-note ol {
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      @media (max-width: 980px) {
+        .static-shell {
+          padding: 24px;
+        }
+
+        .static-hero,
+        .static-dashboard,
+        .static-insights {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="static-shell" data-static-app>
+        <main class="static-page">
+          <section class="static-hero" aria-labelledby="static-title">
+            <div>
+              <span class="static-kicker">Sito didattico desktop</span>
+              <h1 id="static-title">Capire la CO₂ delle scelte quotidiane</h1>
+              <p>
+                Una dashboard didattica per confrontare dieta, intrattenimento, outdoor e un viaggio intercontinentale. I valori sono dimostrativi e servono a spiegare scala e ordine di grandezza.
+              </p>
+            </div>
+
+            <aside class="static-card static-total-card" aria-label="Risultato principale">
+              <span class="static-label">Scenario attivo</span>
+              <strong data-total-label>42,1 kg CO₂e</strong>
+              <p><span data-trip-percent>2,3</span>% di un viaggio intercontinentale A/R.</p>
+            </aside>
+          </section>
+
+          <section class="static-dashboard" aria-label="Dashboard didattica interattiva">
+            <div class="static-column">
+              <article class="static-card static-card-inner">
+                <span class="static-label">1. Dieta</span>
+                <h2>Scegli uno stile alimentare</h2>
+                <p>Il valore settimanale cambia il totale e i grafici.</p>
+                <div class="static-options" data-diet-options></div>
+              </article>
+
+              <article class="static-card static-card-inner">
+                <span class="static-label">2. Attività</span>
+                <h2>Seleziona il tempo libero</h2>
+                <p>Le checkbox sono native e aggiornano subito lo scenario.</p>
+                <div class="static-activities" data-activity-options></div>
+              </article>
+            </div>
+
+            <div class="static-column">
+              <article class="static-card static-card-inner static-summary">
+                <div>
+                  <span class="static-label">Totale stimato</span>
+                  <h2 data-summary-total>42,1 kg CO₂e</h2>
+                  <p data-summary-copy>Dieta flexitariana + attività selezionate.</p>
+                </div>
+                <div class="static-score" aria-hidden="true">
+                  <span data-score>42</span>
+                  <small>kg</small>
+                </div>
+              </article>
+
+              <article class="static-card static-card-inner">
+                <span class="static-label">Grafico 1</span>
+                <h2>Composizione dello scenario</h2>
+                <div class="static-chart" data-breakdown-chart></div>
+              </article>
+
+              <article class="static-card static-card-inner">
+                <span class="static-label">Grafico 2</span>
+                <h2>Confronto con viaggio intercontinentale</h2>
+                <p>Benchmark didattico: 1.800 kg CO₂e per un A/R intercontinentale.</p>
+                <div class="static-chart static-compare" data-comparison-chart></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="static-insights" aria-label="Insight didattici">
+            <article class="static-card static-card-inner">
+              <span class="static-label">Lettura rapida</span>
+              <h2 data-main-insight>Attività più pesante: trekking</h2>
+              <p>Il punto didattico non è solo il totale, ma capire quale scelta cambia davvero il risultato.</p>
+            </article>
+
+            <article class="static-card static-card-inner static-dark">
+              <span class="static-label">Scala</span>
+              <h2 data-weeks>43 settimane simili</h2>
+              <p>Quante settimane come questa servirebbero per raggiungere il benchmark del viaggio intercontinentale.</p>
+            </article>
+          </section>
+
+          <section class="static-card static-card-inner static-note" aria-label="Note metodologiche">
+            <h2>Note metodologiche</h2>
+            <ol>
+              <li>Numeri dimostrativi: servono a testare UX, gerarchia e comprensione.</li>
+              <li>Il benchmark di viaggio va sostituito con una fonte documentata nella versione finale.</li>
+              <li>Il layout è desktop-first, con adattamento responsive solo sotto tablet.</li>
+            </ol>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const diets = [
+          { key: 'vegan', label: 'Vegana', description: 'Solo alimenti vegetali.', value: 14 },
+          { key: 'vegetarian', label: 'Vegetariana', description: 'Vegetale con latticini e uova.', value: 18 },
+          { key: 'flexitarian', label: 'Flexitariana', description: 'Prevalenza vegetale, pollo e suino moderati.', value: 23 },
+          { key: 'omnivore', label: 'Onnivora', description: 'Dieta mista con carne, pesce e latticini.', value: 31 },
+          { key: 'carnivore', label: 'Carnivora', description: 'Forte prevalenza di prodotti animali.', value: 45 },
+        ]
+
+        const activities = [
+          { key: 'gaming', label: 'Weekend gaming online', description: 'Due giornate con sessioni online.', value: 4.8 },
+          { key: 'climbing', label: 'Giornata ad arrampicare', description: 'Palestra o falesia vicina.', value: 6.2 },
+          { key: 'trekking', label: 'Giornata di trekking', description: 'Escursione giornaliera regionale.', value: 8.1 },
+        ]
+
+        const trip = 1800
+        let selectedDiet = 'flexitarian'
+        let selectedActivities = ['gaming', 'climbing', 'trekking']
+
+        const formatKg = (value) => `${value.toFixed(1).replace('.', ',')} kg CO₂e`
+        const width = (value, max) => `${Math.max((value / max) * 100, 3)}%`
+
+        function renderBar(row, max) {
+          return `
+            <div class="static-bar-row">
+              <div class="static-bar-heading"><span>${row.label}</span><strong>${formatKg(row.value)}</strong></div>
+              <div class="static-bar-track"><div class="static-bar-fill" style="width:${width(row.value, max)}"></div></div>
+              <small>${row.detail}</small>
+            </div>
+          `
+        }
+
+        function render() {
+          const diet = diets.find((item) => item.key === selectedDiet) || diets[2]
+          const activeActivities = activities.filter((item) => selectedActivities.includes(item.key))
+          const activityTotal = activeActivities.reduce((sum, item) => sum + item.value, 0)
+          const total = diet.value + activityTotal
+          const percent = (total / trip) * 100
+          const weeks = Math.round(trip / Math.max(total, 0.1))
+          const highest = activeActivities.slice().sort((a, b) => b.value - a.value)[0]
+
+          document.querySelector('[data-total-label]').textContent = formatKg(total)
+          document.querySelector('[data-summary-total]').textContent = formatKg(total)
+          document.querySelector('[data-score]').textContent = Math.round(total)
+          document.querySelector('[data-trip-percent]').textContent = percent.toFixed(1).replace('.', ',')
+          document.querySelector('[data-summary-copy]').textContent = `${diet.label}${activeActivities.length ? ' + ' + activeActivities.map((item) => item.label).join(' + ') : ' senza attività extra'}`
+          document.querySelector('[data-main-insight]').textContent = highest ? `Attività più pesante: ${highest.label}` : 'Nessuna attività extra selezionata'
+          document.querySelector('[data-weeks]').textContent = `${weeks} settimane simili`
+
+          document.querySelector('[data-diet-options]').innerHTML = diets.map((item) => `
+            <button class="static-diet" type="button" data-diet="${item.key}" aria-pressed="${item.key === selectedDiet}">
+              <span>${item.label}</span>
+              <strong>${formatKg(item.value)}</strong>
+              <small>${item.description}</small>
+            </button>
+          `).join('')
+
+          document.querySelector('[data-activity-options]').innerHTML = activities.map((item) => `
+            <label class="static-activity">
+              <input type="checkbox" data-activity="${item.key}" ${selectedActivities.includes(item.key) ? 'checked' : ''} />
+              <span><strong>${item.label}</strong><small>${item.description}</small></span>
+              <em>${formatKg(item.value)}</em>
+            </label>
+          `).join('')
+
+          document.querySelector('[data-breakdown-chart]').innerHTML = [
+            { label: 'Dieta selezionata', value: diet.value, detail: diet.label },
+            { label: 'Attività selezionate', value: activityTotal, detail: `${activeActivities.length} attività` },
+          ].map((row) => renderBar(row, total)).join('')
+
+          document.querySelector('[data-comparison-chart]').innerHTML = [
+            { label: 'Tuo scenario', value: total, detail: 'Dieta + attività' },
+            { label: 'Viaggio intercontinentale A/R', value: trip, detail: 'Benchmark dimostrativo' },
+          ].map((row) => renderBar(row, trip)).join('')
+
+          document.querySelectorAll('[data-diet]').forEach((button) => {
+            button.addEventListener('click', () => {
+              selectedDiet = button.getAttribute('data-diet') || selectedDiet
+              render()
+            })
+          })
+
+          document.querySelectorAll('[data-activity]').forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+              const key = checkbox.getAttribute('data-activity')
+              if (!key) return
+              selectedActivities = checkbox.checked
+                ? Array.from(new Set([...selectedActivities, key]))
+                : selectedActivities.filter((item) => item !== key)
+              render()
+            })
+          })
+        }
+
+        render()
+      })()
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
