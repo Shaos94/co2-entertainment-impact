@@ -1,6 +1,20 @@
 # CO₂ Entertainment Impact
 
-Single-page app statica in React, TypeScript e Vite per prototipare un calcolatore divulgativo sull'impatto CO₂e di dieta e attività di intrattenimento.
+## 🌐 Sito live
+
+**[Apri direttamente il sito pubblicato](https://shaos94.github.io/co2-entertainment-impact/)**
+
+> URL: https://shaos94.github.io/co2-entertainment-impact/
+
+Single-page app statica in React, TypeScript e Vite per confrontare in modo didattico l'impatto CO₂e di dieta, attività, festival ed esperienze di intrattenimento.
+
+## Funzioni principali
+
+- scala comparativa in kg CO₂e;
+- selezione di dieta e attività;
+- configurazione del Kappa FuturFestival per durata e profilo del partecipante;
+- confronto con festival, eventi low-carbon e viaggi aerei;
+- fonti e metodologia accessibili dal sito.
 
 ## Stack
 
@@ -32,4 +46,4 @@ Il workflow `.github/workflows/deploy.yml` pubblica la cartella `dist`.
 
 ## Nota dati
 
-I valori CO₂e nel mockup sono dimostrativi. Prima di usare il sito come strumento divulgativo, sostituire i valori con dati documentati e fonti tracciabili.
+I valori CO₂e includono dati documentati, proxy e scenari didattici. Le stime non ufficiali sono dichiarate nell'interfaccia e nella metodologia.
