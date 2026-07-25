@@ -36,7 +36,6 @@ type Source = {
 type ScaleItem = {
   key: ScaleKey
   label: string
-  eyebrow: string
   description: string
   kgCo2e: number
   sourceId: SourceId
@@ -92,13 +91,13 @@ const sources: Source[] = [
   {
     id: 'kappaAttendance',
     title: 'Kappa FuturFestival — attendance pubblica',
-    use: 'Contesto dimensionale: festival di 3 giorni, 115.000 presenze nel 2024 e 120.000 nel 2025 secondo fonti pubbliche.',
+    use: 'Contesto dimensionale del festival e delle sue tre giornate.',
     url: 'https://it.wikipedia.org/wiki/Kappa_FuturFestival',
   },
   {
     id: 'tyndallLive',
     title: 'Tyndall Centre / Massive Attack Act 1.5',
-    use: 'Metodo live event: mobilità del pubblico come driver dominante; esempio di evento low-carbon.',
+    use: 'Metodo live event: mobilità del pubblico come driver dominante.',
     url: 'https://www.tyndall.ac.uk/',
   },
 ]
@@ -148,7 +147,7 @@ const activityItems: StaticItem[] = [
     description: 'Sessioni online, dispositivo, schermo e rete.',
     kgCo2e: 2.4,
     sourceId: 'carbonTrust',
-    note: 'Proxy conservativo. Da raffinare con watt reali del setup.',
+    note: 'Proxy conservativo da raffinare con i consumi reali del setup.',
   },
   {
     key: 'climbing',
@@ -156,7 +155,7 @@ const activityItems: StaticItem[] = [
     description: 'Giornata in palestra o falesia vicina.',
     kgCo2e: 6.2,
     sourceId: 'defra',
-    note: 'Driver principale: spostamento locale o regionale.',
+    note: 'Il driver principale è lo spostamento locale o regionale.',
   },
   {
     key: 'trekking',
@@ -164,7 +163,7 @@ const activityItems: StaticItem[] = [
     description: 'Escursione giornaliera con spostamento regionale.',
     kgCo2e: 8.1,
     sourceId: 'defra',
-    note: 'Proxy basato su trasporto; attrezzatura esclusa.',
+    note: 'Proxy basato sul trasporto; attrezzatura esclusa.',
   },
 ]
 
@@ -175,7 +174,7 @@ const benchmarkItems: StaticItem[] = [
     description: 'Benchmark breve-medio in Europa.',
     kgCo2e: 350,
     sourceId: 'icao',
-    note: 'Dato dimostrativo: in versione finale va calcolato per rotta.',
+    note: 'Dato dimostrativo: nella versione finale va calcolato per rotta.',
   },
   {
     key: 'flightIntercontinental',
@@ -183,7 +182,7 @@ const benchmarkItems: StaticItem[] = [
     description: 'Benchmark alto per dare scala agli altri valori.',
     kgCo2e: 1800,
     sourceId: 'icao',
-    note: 'Dato dimostrativo: rotta e classe cambiano molto il risultato.',
+    note: 'Rotta e classe possono modificare molto il risultato.',
   },
 ]
 
@@ -196,12 +195,12 @@ const kappaTravelProfiles: Record<TravelProfileKey, { label: string; travelKgCo2
   national: {
     label: 'Nazionale',
     travelKgCo2e: 78,
-    description: 'Partecipante dall’Italia, treno/auto + quota evento.',
+    description: 'Partecipante dall’Italia, treno o auto più quota evento.',
   },
   international: {
     label: 'Internazionale',
     travelKgCo2e: 408,
-    description: 'Partecipante estero con volo europeo + quota evento.',
+    description: 'Partecipante estero con volo europeo più quota evento.',
   },
 }
 
@@ -254,18 +253,16 @@ function App() {
   const configurableItems: ScaleItem[] = [
     {
       key: 'kappa',
-      label: `Kappa FuturFestival — ${kappaTravelProfiles[kappaProfile].label.toLowerCase()}, ${kappaDays} ${kappaDays === 1 ? 'giorno' : 'giorni'}`,
-      eyebrow: 'Festival',
+      label: `Kappa FuturFestival — ${kappaDays} ${kappaDays === 1 ? 'giorno' : 'giorni'}, ${kappaTravelProfiles[kappaProfile].label.toLowerCase()}`,
       description: kappaTravelProfiles[kappaProfile].description,
       kgCo2e: kappaKgCo2e,
       sourceId: kappaProfile === 'international' ? 'tyndallLive' : 'kappaAttendance',
-      note: `Stima: ${kappaTravelProfiles[kappaProfile].travelKgCo2e} kg viaggio + ${kappaEventKgPerDay} kg/giorno × ${kappaDays}. Non è un dato ufficiale KFF.`,
+      note: `Stima: ${kappaTravelProfiles[kappaProfile].travelKgCo2e} kg viaggio + ${kappaEventKgPerDay} kg/giorno × ${kappaDays}.`,
     },
     {
       key: 'festivalLocal',
       label: `Festival locale — ${festivalDays} ${festivalDays === 1 ? 'giorno' : 'giorni'}`,
-      eyebrow: 'Festival',
-      description: 'Evento locale con breve mobilità urbana o regionale.',
+      description: 'Evento locale con mobilità urbana o regionale breve.',
       kgCo2e: localFestivalKgCo2e,
       sourceId: 'agf',
       note: `Stima: ${localFestivalTravelKg} kg viaggio + ${localFestivalEventKgPerDay} kg/giorno × ${festivalDays}.`,
@@ -273,8 +270,7 @@ function App() {
     {
       key: 'lowCarbonEvent',
       label: `Evento low-carbon — ${lowCarbonDays} ${lowCarbonDays === 1 ? 'giorno' : 'giorni'}`,
-      eyebrow: 'Festival',
-      description: 'Scenario ispirato a eventi con energia pulita, mobilità vincolata e food plant-based.',
+      description: 'Scenario con energia pulita, mobilità vincolata e food plant-based.',
       kgCo2e: lowCarbonKgCo2e,
       sourceId: 'tyndallLive',
       note: `Scenario didattico: ${lowCarbonEventKgPerDay} kg/giorno × ${lowCarbonDays}.`,
@@ -284,18 +280,17 @@ function App() {
   const dietScaleItem: ScaleItem = {
     key: 'diet',
     label: `Dieta ${selectedDiet.label.toLowerCase()} — 1 settimana`,
-    eyebrow: 'Dieta',
     description: selectedDiet.description,
     kgCo2e: selectedDiet.weeklyKgCo2e,
     sourceId: selectedDiet.sourceId,
-    note: 'Valore giornaliero convertito in settimana. La dieta può essere esclusa dalla scala.',
+    note: 'Valore giornaliero convertito in settimana.',
   }
 
   const allScaleItems: ScaleItem[] = [
     dietScaleItem,
-    ...activityItems.map((item) => ({ ...item, eyebrow: 'Attività' })),
+    ...activityItems,
     ...configurableItems,
-    ...benchmarkItems.map((item) => ({ ...item, eyebrow: 'Viaggio' })),
+    ...benchmarkItems,
   ]
 
   const activeScaleItems = allScaleItems
@@ -315,16 +310,17 @@ function App() {
   }
 
   const isIncluded = (key: ScaleKey) => includedKeys.includes(key)
+  const countIncluded = (keys: ScaleKey[]) => keys.filter((key) => isIncluded(key)).length
 
   return (
     <main>
       <section className="hero" aria-labelledby="page-title">
         <div className="hero-copy">
           <div className="eyebrow">CO₂e cultural scale</div>
-          <h1 id="page-title">Una scala pulita per leggere impatti molto diversi.</h1>
+          <h1 id="page-title">Confronta l’impatto, senza perdere la scala.</h1>
           <p>
-            Seleziona cosa includere, configura durata e tipo di partecipazione e confronta
-            tutto su una sola scala in kg CO₂e.
+            La comparazione resta in primo piano. Apri i menu solo quando devi cambiare dieta,
+            attività, evento o viaggio.
           </p>
           <div className="hero-actions">
             <button type="button" onClick={() => methodologyDialogRef.current?.showModal()}>
@@ -335,252 +331,264 @@ function App() {
         </div>
 
         <aside className="panel hero-card" aria-label="Somma elementi attivi">
-          <span className="label">Totale scala</span>
+          <span className="label">Totale selezionato</span>
           <strong>{formatKg(scenarioTotal)}</strong>
-          <p>{activeScaleItems.length} elementi attivi.</p>
+          <p>{activeScaleItems.length} elementi nella comparazione.</p>
         </aside>
       </section>
 
       <section className="workspace" aria-label="Dashboard didattica">
-        <aside className="panel controls-panel">
-          <div className="section-title controls-title">
-            <span className="label">Selezione</span>
+        <aside className="controls-column" aria-label="Configurazione oggetti">
+          <div className="controls-intro">
+            <span className="label">Configura</span>
             <h2>Oggetti della scala</h2>
-            <p>Quattro gruppi, con opzioni mostrate solo quando servono.</p>
+            <p>Ogni sezione mostra lo stato corrente e si apre solo quando serve.</p>
           </div>
 
-          <section className="object-group" aria-labelledby="diet-group-title">
-            <header className="object-group-header">
-              <span className="group-index">01</span>
-              <div>
-                <h3 id="diet-group-title">Dieta</h3>
-                <p>Impronta alimentare di una settimana.</p>
-              </div>
-            </header>
-
-            <article className={`object-card ${isIncluded('diet') ? 'active' : ''}`}>
-              <label className="object-toggle">
+          <details className="control-menu">
+            <summary>
+              <span className="menu-copy">
+                <strong>Dieta</strong>
+                <small>{selectedDiet.label} · {formatKg(selectedDiet.weeklyKgCo2e)}</small>
+              </span>
+              <span className={`menu-status ${isIncluded('diet') ? 'active' : ''}`}>
+                {isIncluded('diet') ? 'Inclusa' : 'Esclusa'}
+              </span>
+              <span className="menu-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div className="menu-content">
+              <label className={`select-row ${isIncluded('diet') ? 'active' : ''}`}>
                 <input checked={isIncluded('diet')} onChange={() => toggleScaleItem('diet')} type="checkbox" />
                 <span>
-                  <strong>{selectedDiet.label}</strong>
-                  <span>1 settimana · {selectedDiet.description}</span>
+                  <strong>Includi la dieta</strong>
+                  <small>Periodo di confronto: una settimana</small>
                 </span>
-                <em>{formatKg(selectedDiet.weeklyKgCo2e)}</em>
               </label>
-              <div className="segmented diet-options" aria-label="Tipo dieta">
+
+              <div className="choice-grid" aria-label="Tipo dieta">
                 {diets.map((diet) => (
                   <button
+                    className="choice-button"
                     aria-pressed={diet.key === selectedDiet.key}
                     key={diet.key}
                     onClick={() => setSelectedDietKey(diet.key)}
                     type="button"
                   >
-                    {diet.label}
+                    <strong>{diet.label}</strong>
+                    <small>{formatKg(diet.weeklyKgCo2e)} / settimana</small>
                   </button>
                 ))}
               </div>
-            </article>
-          </section>
+            </div>
+          </details>
 
-          <section className="object-group" aria-labelledby="activities-group-title">
-            <header className="object-group-header">
-              <span className="group-index">02</span>
-              <div>
-                <h3 id="activities-group-title">Attività</h3>
-                <p>Esperienze quotidiane e outdoor.</p>
-              </div>
-            </header>
-
-            <div className="object-grid">
+          <details className="control-menu">
+            <summary>
+              <span className="menu-copy">
+                <strong>Attività</strong>
+                <small>Gaming, arrampicata e trekking</small>
+              </span>
+              <span className="menu-status active">
+                {countIncluded(['gaming', 'climbing', 'trekking'])} attive
+              </span>
+              <span className="menu-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div className="menu-content selection-list">
               {activityItems.map((item) => (
-                <label className={`object-card simple-card ${isIncluded(item.key) ? 'active' : ''}`} key={item.key}>
-                  <span className="object-toggle">
-                    <input checked={isIncluded(item.key)} onChange={() => toggleScaleItem(item.key)} type="checkbox" />
-                    <span>
-                      <strong>{item.label}</strong>
-                      <span>{item.description}</span>
-                    </span>
-                    <em>{formatKg(item.kgCo2e)}</em>
+                <label className={`select-row ${isIncluded(item.key) ? 'active' : ''}`} key={item.key}>
+                  <input checked={isIncluded(item.key)} onChange={() => toggleScaleItem(item.key)} type="checkbox" />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>{item.description}</small>
                   </span>
+                  <em>{formatKg(item.kgCo2e)}</em>
                 </label>
               ))}
             </div>
-          </section>
+          </details>
 
-          <section className="object-group" aria-labelledby="events-group-title">
-            <header className="object-group-header">
-              <span className="group-index">03</span>
-              <div>
-                <h3 id="events-group-title">Festival ed eventi</h3>
-                <p>Durata e provenienza modificano il risultato.</p>
-              </div>
-            </header>
-
-            <article className={`object-card featured-card ${isIncluded('kappa') ? 'active' : ''}`}>
-              <label className="object-toggle">
-                <input checked={isIncluded('kappa')} onChange={() => toggleScaleItem('kappa')} type="checkbox" />
-                <span>
-                  <strong>Kappa FuturFestival</strong>
+          <details className="control-menu">
+            <summary>
+              <span className="menu-copy">
+                <strong>Festival ed eventi</strong>
+                <small>Kappa, festival locale e scenario low-carbon</small>
+              </span>
+              <span className="menu-status active">
+                {countIncluded(['kappa', 'festivalLocal', 'lowCarbonEvent'])} attivi
+              </span>
+              <span className="menu-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div className="menu-content config-stack">
+              <article className="config-object">
+                <label className={`select-row ${isIncluded('kappa') ? 'active' : ''}`}>
+                  <input checked={isIncluded('kappa')} onChange={() => toggleScaleItem('kappa')} type="checkbox" />
                   <span>
-                    {kappaDays} {kappaDays === 1 ? 'giorno' : 'giorni'} · partecipante {kappaTravelProfiles[kappaProfile].label.toLowerCase()}
+                    <strong>Kappa FuturFestival</strong>
+                    <small>{kappaDays} {kappaDays === 1 ? 'giorno' : 'giorni'} · {kappaTravelProfiles[kappaProfile].label}</small>
                   </span>
-                </span>
-                <em>{formatKg(kappaKgCo2e)}</em>
-              </label>
+                  <em>{formatKg(kappaKgCo2e)}</em>
+                </label>
 
-              <div className="option-grid">
-                <div className="option-block">
-                  <small>Durata</small>
-                  <div className="segmented two">
+                <fieldset>
+                  <legend>Durata</legend>
+                  <div className="choice-grid compact">
                     {[1, 3].map((days) => (
                       <button
+                        className="choice-button"
                         aria-pressed={kappaDays === days}
                         key={days}
                         onClick={() => setKappaDays(days as DurationDays)}
                         type="button"
                       >
-                        {days} {days === 1 ? 'giorno' : 'giorni'}
+                        <strong>{days} {days === 1 ? 'giorno' : 'giorni'}</strong>
                       </button>
                     ))}
                   </div>
-                </div>
+                </fieldset>
 
-                <div className="option-block">
-                  <small>Provenienza</small>
-                  <div className="segmented three">
+                <fieldset>
+                  <legend>Provenienza</legend>
+                  <div className="choice-grid compact three-columns">
                     {(Object.keys(kappaTravelProfiles) as TravelProfileKey[]).map((profile) => (
                       <button
+                        className="choice-button"
                         aria-pressed={kappaProfile === profile}
                         key={profile}
                         onClick={() => setKappaProfile(profile)}
                         type="button"
                       >
-                        {kappaTravelProfiles[profile].label}
+                        <strong>{kappaTravelProfiles[profile].label}</strong>
                       </button>
                     ))}
                   </div>
-                </div>
-              </div>
-              <p className="microcopy">{configurableItems[0].note}</p>
-            </article>
+                </fieldset>
+              </article>
 
-            <div className="object-grid">
-              <article className={`object-card ${isIncluded('festivalLocal') ? 'active' : ''}`}>
-                <label className="object-toggle">
+              <article className="config-object">
+                <label className={`select-row ${isIncluded('festivalLocal') ? 'active' : ''}`}>
                   <input checked={isIncluded('festivalLocal')} onChange={() => toggleScaleItem('festivalLocal')} type="checkbox" />
                   <span>
                     <strong>Festival locale</strong>
-                    <span>{festivalDays} {festivalDays === 1 ? 'giorno' : 'giorni'} · mobilità breve</span>
+                    <small>{festivalDays} {festivalDays === 1 ? 'giorno' : 'giorni'} · mobilità breve</small>
                   </span>
                   <em>{formatKg(localFestivalKgCo2e)}</em>
                 </label>
-                <div className="segmented two">
+                <div className="choice-grid compact">
                   {[1, 3].map((days) => (
                     <button
+                      className="choice-button"
                       aria-pressed={festivalDays === days}
                       key={days}
                       onClick={() => setFestivalDays(days as DurationDays)}
                       type="button"
                     >
-                      {days} {days === 1 ? 'giorno' : 'giorni'}
+                      <strong>{days} {days === 1 ? 'giorno' : 'giorni'}</strong>
                     </button>
                   ))}
                 </div>
               </article>
 
-              <article className={`object-card ${isIncluded('lowCarbonEvent') ? 'active' : ''}`}>
-                <label className="object-toggle">
+              <article className="config-object">
+                <label className={`select-row ${isIncluded('lowCarbonEvent') ? 'active' : ''}`}>
                   <input checked={isIncluded('lowCarbonEvent')} onChange={() => toggleScaleItem('lowCarbonEvent')} type="checkbox" />
                   <span>
                     <strong>Evento low-carbon</strong>
-                    <span>{lowCarbonDays} {lowCarbonDays === 1 ? 'giorno' : 'giorni'} · scenario ottimizzato</span>
+                    <small>{lowCarbonDays} {lowCarbonDays === 1 ? 'giorno' : 'giorni'} · scenario ottimizzato</small>
                   </span>
                   <em>{formatKg(lowCarbonKgCo2e)}</em>
                 </label>
-                <div className="segmented two">
+                <div className="choice-grid compact">
                   {[1, 3].map((days) => (
                     <button
+                      className="choice-button"
                       aria-pressed={lowCarbonDays === days}
                       key={days}
                       onClick={() => setLowCarbonDays(days as DurationDays)}
                       type="button"
                     >
-                      {days} {days === 1 ? 'giorno' : 'giorni'}
+                      <strong>{days} {days === 1 ? 'giorno' : 'giorni'}</strong>
                     </button>
                   ))}
                 </div>
               </article>
             </div>
-          </section>
+          </details>
 
-          <section className="object-group" aria-labelledby="travel-group-title">
-            <header className="object-group-header">
-              <span className="group-index">04</span>
-              <div>
-                <h3 id="travel-group-title">Viaggi benchmark</h3>
-                <p>Riferimenti di scala, non voli inclusi negli eventi.</p>
-              </div>
-            </header>
-
-            <div className="object-grid">
+          <details className="control-menu">
+            <summary>
+              <span className="menu-copy">
+                <strong>Viaggi benchmark</strong>
+                <small>Voli separati dagli eventi</small>
+              </span>
+              <span className="menu-status active">
+                {countIncluded(['flightEurope', 'flightIntercontinental'])} attivi
+              </span>
+              <span className="menu-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div className="menu-content selection-list">
               {benchmarkItems.map((item) => (
-                <label className={`object-card simple-card ${isIncluded(item.key) ? 'active' : ''}`} key={item.key}>
-                  <span className="object-toggle">
-                    <input checked={isIncluded(item.key)} onChange={() => toggleScaleItem(item.key)} type="checkbox" />
-                    <span>
-                      <strong>{item.label}</strong>
-                      <span>{item.description}</span>
-                    </span>
-                    <em>{formatKg(item.kgCo2e)}</em>
+                <label className={`select-row ${isIncluded(item.key) ? 'active' : ''}`} key={item.key}>
+                  <input checked={isIncluded(item.key)} onChange={() => toggleScaleItem(item.key)} type="checkbox" />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>{item.description}</small>
                   </span>
+                  <em>{formatKg(item.kgCo2e)}</em>
                 </label>
               ))}
             </div>
-          </section>
+          </details>
         </aside>
 
         <section className="panel scale-panel" aria-label="Scala principale in kg CO2e">
           <div className="scale-header">
             <div>
-              <span className="label">Scala principale</span>
-              <h2>Confronto in kg CO₂e</h2>
-              <p>Le barre sono ordinate dal valore più alto al più basso.</p>
+              <span className="label">Comparazione</span>
+              <h2>Impatto in kg CO₂e</h2>
+              <p>Gli elementi selezionati sono ordinati dal valore più alto al più basso.</p>
             </div>
-            <div className="total-pill">
-              <span>Totale attivo</span>
+            <div className="total-block">
+              <span>Totale</span>
               <strong>{formatKg(scenarioTotal)}</strong>
             </div>
           </div>
 
-          <div className="scale-chart">
-            {activeScaleItems.map((item) => {
-              const source = sources.find((sourceItem) => sourceItem.id === item.sourceId)
-              return (
-                <article className="scale-row" key={item.key}>
-                  <div className="scale-row-copy">
-                    <small>{item.eyebrow}</small>
-                    <strong>{item.label}</strong>
-                    <span>{source?.title ?? 'Fonte da verificare'}</span>
-                  </div>
-                  <div className="scale-bar-wrap">
+          {activeScaleItems.length > 0 ? (
+            <div className="scale-chart">
+              {activeScaleItems.map((item) => {
+                const source = sources.find((sourceItem) => sourceItem.id === item.sourceId)
+                return (
+                  <article className="scale-row" key={item.key}>
+                    <div className="scale-row-heading">
+                      <strong>{item.label}</strong>
+                      <span>{item.description}</span>
+                    </div>
                     <div className="scale-value">{formatKg(item.kgCo2e)}</div>
-                    <div className="scale-track">
+                    <div className="scale-track" aria-hidden="true">
                       <div className="scale-fill" style={{ width: getBarWidth(item.kgCo2e, maxScaleValue) }} />
                     </div>
-                    <small>{item.note}</small>
-                  </div>
-                </article>
-              )
-            })}
-          </div>
+                    <div className="scale-footnote">
+                      <span>{item.note}</span>
+                      <small>{source?.title ?? 'Fonte da verificare'}</small>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="empty-state">
+              <strong>Nessun oggetto selezionato</strong>
+              <p>Apri uno dei menu e aggiungi almeno un elemento alla comparazione.</p>
+            </div>
+          )}
         </section>
       </section>
 
       <section className="panel sources-panel" id="sources" aria-label="Fonti usate">
         <div className="section-title">
           <span className="label">Fonti</span>
-          <h2>Fonti usate per i calcoli</h2>
-          <p>Le schede evidenziate sono quelle usate dagli elementi attivi nella scala.</p>
+          <h2>Riferimenti usati</h2>
+          <p>Le schede evidenziate alimentano gli elementi attualmente selezionati.</p>
         </div>
         <div className="source-grid">
           {sources.map((source) => (
@@ -604,24 +612,16 @@ function App() {
           <h2>Come leggere questi numeri</h2>
           <ol>
             <li>
-              <strong>Kappa FuturFestival.</strong> Puoi scegliere 1 giorno o 3 giorni.
-              Il viaggio è conteggiato una volta, mentre la quota evento viene moltiplicata per i giorni.
+              <strong>Kappa FuturFestival.</strong> Il viaggio è conteggiato una volta; la quota evento viene moltiplicata per uno o tre giorni.
             </li>
             <li>
-              <strong>Festival.</strong> I valori Kappa sono scenari didattici, non dati ufficiali KFF.
-              Il punto metodologico è mostrare che la mobilità del pubblico domina l’impatto.
+              <strong>Festival.</strong> I valori Kappa sono scenari didattici, non un dato ufficiale del festival.
             </li>
             <li>
-              <strong>Diete.</strong> I valori giornalieri sono convertiti in settimana. Flexitariana,
-              onnivora e carnivora sono proxy ricavati da categorie di consumo carne.
+              <strong>Diete.</strong> I valori giornalieri sono convertiti in una settimana comparabile.
             </li>
             <li>
-              <strong>Viaggi.</strong> I voli sono benchmark di scala. Nella versione finale vanno calcolati
-              per rotta, classe, fattore di carico e metodo scelto.
-            </li>
-            <li>
-              <strong>Uso didattico.</strong> Lo scopo è confrontare ordini di grandezza, non dichiarare
-              un inventario carbonico definitivo.
+              <strong>Viaggi.</strong> I voli sono benchmark: rotta e classe possono cambiare molto il risultato.
             </li>
           </ol>
         </div>
