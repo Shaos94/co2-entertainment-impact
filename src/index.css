@@ -225,6 +225,7 @@ small {
 
 .object-toggle > span {
   display: grid;
+  min-width: 0;
   gap: 3px;
 }
 
@@ -243,6 +244,7 @@ small {
   font-size: 1rem;
   font-weight: 900;
   letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
 }
 
 .object-toggle span span,
@@ -260,8 +262,8 @@ small {
 
 .segmented {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
   margin-top: 12px;
 }
 
@@ -274,13 +276,18 @@ small {
 }
 
 .segmented button {
+  min-width: 0;
+  min-height: 38px;
   border: 1px solid rgba(23, 31, 26, 0.1);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.72);
   color: #4f5750;
   font-size: 0.82rem;
   font-weight: 850;
-  padding: 8px 9px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  padding: 9px 11px;
+  white-space: normal;
 }
 
 .segmented button[aria-pressed="true"],
