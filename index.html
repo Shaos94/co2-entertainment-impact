@@ -6,145 +6,144 @@
     <title>CO₂ Entertainment Impact</title>
     <meta
       name="description"
-      content="Scala didattica desktop per confrontare dieta, attività, festival, Kappa FuturFestival e viaggi in kg CO₂e."
+      content="Scala didattica per confrontare dieta, attività, festival e viaggi in kg CO₂e."
     />
     <style>
       * { box-sizing: border-box; }
-      body { margin: 0; min-width: 320px; background: linear-gradient(180deg, #faf7ef 0%, #eee6d5 100%); color: #171f1a; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      body { margin: 0; min-width: 320px; color: #1a1a1a; background: radial-gradient(circle at 8% 0%, rgba(142,165,138,.14), transparent 32rem), #f5f1ea; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
       button, input { font: inherit; }
-      .fallback { width: min(1440px, calc(100% - 56px)); margin: 0 auto; padding: 44px 0 72px; }
-      .hero { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: end; padding: 32px 0 28px; }
-      .eyebrow, .label { display: inline-flex; width: fit-content; border-radius: 999px; background: rgba(47, 95, 53, 0.1); color: #2f5f35; font-size: 12px; font-weight: 850; letter-spacing: .08em; padding: 7px 10px; text-transform: uppercase; }
+      button, summary, label { cursor: pointer; }
       h1, h2, h3, p { margin: 0; }
-      h1 { max-width: 960px; margin-top: 18px; font-size: clamp(56px, 6.5vw, 106px); line-height: .91; letter-spacing: -.085em; }
-      h2 { font-size: clamp(24px, 2vw, 36px); line-height: 1.02; letter-spacing: -.045em; }
-      p, small, span { line-height: 1.52; } p, small { color: #60665f; }
-      .hero p { max-width: 760px; margin-top: 18px; font-size: 17px; }
-      .panel, .source { border: 1px solid rgba(23,31,26,.1); border-radius: 32px; background: rgba(255,255,255,.58); box-shadow: 0 24px 70px rgba(23,31,26,.06); }
-      .summary { display: grid; gap: 12px; padding: 24px; }
-      .summary strong { font-size: clamp(32px, 3.7vw, 56px); letter-spacing: -.07em; line-height: .95; }
-      .grid { display: grid; grid-template-columns: minmax(430px,.82fr) minmax(0,1.38fr); gap: 18px; align-items: start; }
-      .controls, .scale, .sources { padding: 22px; }
-      .controls { display: grid; gap: 0; }
-      .section-title { display: grid; gap: 10px; margin-bottom: 2px; }
-      .object-group { display: grid; gap: 12px; padding: 22px 0; border-top: 1px solid rgba(23,31,26,.09); }
-      .object-group:first-of-type { border-top: 0; padding-top: 18px; }
-      .group-head { display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 10px; }
-      .group-head > div { display: grid; gap: 2px; }
-      .group-head h3 { font-size: 16px; }
-      .group-head p { font-size: 13px; }
-      .group-index { display: inline-grid; place-items: center; width: 30px; height: 30px; border: 1px solid rgba(23,31,26,.11); border-radius: 999px; color: #2f5f35; font-size: 11px; font-weight: 900; }
-      .object-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
-      .card { min-width: 0; border: 1px solid rgba(23,31,26,.09); border-radius: 20px; background: rgba(255,255,255,.5); padding: 13px; }
-      .card.active { border-color: rgba(47,95,53,.42); background: rgba(255,255,255,.82); }
-      .toggle { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 11px; align-items: start; cursor: pointer; }
-      .toggle input { width: 19px; height: 19px; margin-top: 3px; accent-color: #2f5f35; }
-      .toggle > span { display: grid; min-width: 0; gap: 3px; }
-      .toggle strong { font-size: 15px; font-weight: 900; letter-spacing: -.025em; overflow-wrap: anywhere; }
-      .toggle span span, .micro { color: #60665f; font-size: 13px; }
-      .toggle em { font-size: 14px; font-style: normal; font-weight: 950; white-space: nowrap; }
-      .option-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 10px; margin-top: 12px; }
-      .option-block { display: grid; gap: 7px; }
-      .option-block small { color: #2f5f35; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-      .segmented { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; margin-top: 12px; }
-      .option-block .segmented { margin-top: 0; }
-      .segmented.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
-      .segmented button { min-width: 0; min-height: 38px; border: 1px solid rgba(23,31,26,.1); border-radius: 999px; background: rgba(255,255,255,.72); color: #4f5750; font-size: 13px; font-weight: 850; line-height: 1.2; overflow-wrap: anywhere; padding: 9px 10px; white-space: normal; cursor: pointer; }
-      .segmented button[aria-pressed="true"] { border-color: #2f5f35; background: #171f1a; color: #faf7ef; }
-      .micro { margin-top: 12px; }
-      .scale { display: grid; gap: 18px; }
-      .scale-head { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: start; }
-      .total { min-width: 220px; border-radius: 26px; background: #171f1a; color: #faf7ef; padding: 18px; }
-      .total span { color: #cbd7c7; font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-      .total strong { display: block; font-size: clamp(28px, 2.8vw, 44px); letter-spacing: -.06em; line-height: .95; margin-top: 8px; }
+      p, small, span { line-height: 1.5; } p, small { color: #65665f; }
+      .fallback { width: min(1480px, calc(100% - 56px)); margin: 0 auto; padding: 42px 0 72px; }
+      .label { display: inline-flex; width: fit-content; border: 1px solid rgba(111,133,105,.22); border-radius: 10px; background: rgba(142,165,138,.11); color: #52664e; font-size: 12px; font-weight: 850; letter-spacing: .08em; padding: 7px 9px; text-transform: uppercase; }
+      .panel { border: 1px solid rgba(26,26,26,.1); border-radius: 28px; background: rgba(255,255,255,.68); box-shadow: 0 24px 60px rgba(26,26,26,.055); }
+      .hero { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 24px; align-items: end; padding: 26px 0 30px; }
+      .hero h1 { max-width: 940px; margin-top: 18px; font-size: clamp(52px,6vw,96px); line-height: .94; letter-spacing: -.075em; }
+      .hero p { max-width: 720px; margin-top: 18px; font-size: 16px; }
+      .summary { display: grid; gap: 10px; padding: 22px; }
+      .summary strong { font-size: clamp(32px,3.4vw,52px); line-height: .96; letter-spacing: -.065em; }
+      .workspace { display: grid; grid-template-columns: minmax(340px,410px) minmax(0,1fr); gap: 18px; align-items: start; }
+      .controls { display: grid; gap: 10px; }
+      .controls-intro { display: grid; gap: 9px; padding: 4px 2px 10px; }
+      .menu { overflow: hidden; border: 1px solid rgba(26,26,26,.1); border-radius: 18px; background: rgba(255,255,255,.6); }
+      .menu[open] { border-color: rgba(111,133,105,.34); background: rgba(255,255,255,.84); }
+      .menu summary { display: grid; grid-template-columns: minmax(0,1fr) auto 24px; gap: 10px; align-items: center; min-height: 78px; padding: 15px 16px; list-style: none; }
+      .menu summary::-webkit-details-marker { display: none; }
+      .menu-copy { display: grid; min-width: 0; gap: 2px; }
+      .menu-copy strong { font-size: 16px; font-weight: 850; }
+      .menu-copy small { font-size: 13px; white-space: normal; overflow-wrap: break-word; }
+      .status { border: 1px solid rgba(111,133,105,.26); border-radius: 9px; background: rgba(142,165,138,.12); color: #52664e; font-size: 12px; font-weight: 800; padding: 6px 8px; white-space: nowrap; }
+      .chevron { font-size: 20px; transition: transform .16s ease; }
+      .menu[open] .chevron { transform: rotate(180deg); }
+      .menu-content { display: grid; gap: 10px; border-top: 1px solid rgba(26,26,26,.08); padding: 14px; }
+      .select-row { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 11px; align-items: start; min-width: 0; border: 1px solid rgba(26,26,26,.1); border-radius: 13px; background: rgba(255,255,255,.6); padding: 12px; }
+      .select-row.active { border-color: rgba(111,133,105,.48); background: rgba(142,165,138,.085); }
+      .select-row input { width: 19px; height: 19px; margin: 2px 0 0; accent-color: #6f8569; }
+      .select-row > span { display: grid; min-width: 0; gap: 2px; }
+      .select-row strong { font-size: 15px; font-weight: 850; white-space: normal; overflow-wrap: break-word; }
+      .select-row small { font-size: 13px; white-space: normal; overflow-wrap: break-word; }
+      .select-row em { font-size: 13px; font-style: normal; font-weight: 850; white-space: nowrap; }
+      .choice-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+      .choice-grid.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .choice { display: grid; min-width: 0; min-height: 56px; gap: 3px; align-content: center; justify-items: start; border: 1px solid rgba(26,26,26,.11); border-radius: 12px; background: rgba(255,255,255,.72); color: #1a1a1a; padding: 11px 12px; text-align: left; }
+      .choice[aria-pressed="true"] { border-color: #6f8569; background: #1a1a1a; color: #f5f1ea; }
+      .choice strong, .choice small { white-space: normal; overflow-wrap: break-word; }
+      .choice strong { color: inherit; font-size: 14px; font-weight: 850; }
+      .choice small { font-size: 12px; }
+      .config { display: grid; gap: 10px; border: 1px solid rgba(26,26,26,.09); border-radius: 15px; background: rgba(255,255,255,.42); padding: 10px; }
+      .config-label { color: #52664e; font-size: 11px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+      .scale { display: grid; gap: 20px; min-width: 0; padding: 24px; }
+      .scale-head { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 18px; align-items: start; }
+      .scale-head > div:first-child { display: grid; gap: 9px; }
+      .total { min-width: 220px; border-radius: 18px; background: #1a1a1a; color: #f5f1ea; padding: 17px; }
+      .total span { color: #cfd7cc; font-size: 12px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+      .total strong { display: block; margin-top: 7px; font-size: clamp(27px,2.7vw,44px); letter-spacing: -.06em; }
       .chart { display: grid; gap: 10px; }
-      .row { display: grid; grid-template-columns: minmax(260px,.34fr) minmax(0,.66fr); gap: 18px; align-items: center; border: 1px solid rgba(23,31,26,.08); border-radius: 22px; background: rgba(255,255,255,.54); padding: 14px; }
-      .row-copy { display: grid; gap: 3px; }
-      .row-copy small { color: #2f5f35; font-weight: 900; text-transform: uppercase; }
-      .row-copy span { color: #60665f; font-size: 14px; }
-      .value { font-weight: 950; text-align: right; }
-      .track { width: 100%; height: 14px; overflow: hidden; border-radius: 999px; background: rgba(23,31,26,.08); margin: 7px 0; }
-      .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #2f5f35, #d6a14d); }
-      .sources { margin-top: 18px; }
-      .source-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
-      .source { display: grid; gap: 10px; border-radius: 22px; padding: 16px; }
-      .source a { color: #2f5f35; font-weight: 900; }
-      @media (max-width:1120px){ .fallback{width:min(100% - 32px,960px)} .hero,.grid,.scale-head,.source-grid{grid-template-columns:1fr} .row{grid-template-columns:1fr} .value{text-align:left} }
-      @media (max-width:720px){ .object-grid,.option-grid,.segmented.three{grid-template-columns:1fr} .toggle{grid-template-columns:auto 1fr} .toggle em{grid-column:2} }
+      .row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 11px 18px; border-top: 1px solid rgba(26,26,26,.09); padding: 16px 0 6px; }
+      .row:first-child { border-top: 0; padding-top: 2px; }
+      .row-copy { display: grid; min-width: 0; gap: 3px; }
+      .row-copy strong { font-size: 16px; font-weight: 880; white-space: normal; overflow-wrap: break-word; }
+      .row-copy span { color: #6d6e66; font-size: 13px; }
+      .value { font-size: 15px; font-weight: 900; white-space: nowrap; }
+      .track { grid-column: 1/-1; width: 100%; height: 12px; overflow: hidden; border-radius: 5px; background: rgba(26,26,26,.075); }
+      .fill { height: 100%; border-radius: 5px; background: #6f8569; }
+      .note { grid-column: 1/-1; font-size: 12px; color: #65665f; }
+      @media (max-width:1120px){ .fallback{width:min(100% - 32px,960px)} .hero,.workspace,.scale-head{grid-template-columns:1fr} .total{min-width:0} }
+      @media (max-width:680px){ .fallback{width:min(100% - 24px,560px);padding-top:22px}.menu summary{grid-template-columns:minmax(0,1fr) 22px}.status{grid-column:1;width:fit-content}.chevron{grid-column:2;grid-row:1/span 2}.choice-grid,.choice-grid.three{grid-template-columns:1fr}.select-row{grid-template-columns:auto minmax(0,1fr)}.select-row em{grid-column:2}.scale{padding:18px} }
     </style>
   </head>
   <body>
     <div id="root">
-      <main class="fallback" data-fallback>
+      <main class="fallback">
         <section class="hero">
           <div>
-            <span class="eyebrow">CO₂e cultural scale</span>
-            <h1>Una scala pulita per leggere impatti molto diversi.</h1>
-            <p>Seleziona gli oggetti, configura gli eventi e confronta tutto su una sola scala.</p>
+            <span class="label">CO₂e cultural scale</span>
+            <h1>Confronta l’impatto, senza perdere la scala.</h1>
+            <p>La comparazione resta in primo piano. Apri i menu solo quando devi cambiare gli oggetti.</p>
           </div>
-          <aside class="panel summary"><span class="label">Totale scala</span><strong data-total>0 kg CO₂e</strong><p data-count></p></aside>
+          <aside class="panel summary"><span class="label">Totale selezionato</span><strong data-total>0 kg CO₂e</strong><p data-count></p></aside>
         </section>
-        <section class="grid">
-          <aside class="panel controls">
-            <div class="section-title"><span class="label">Selezione</span><h2>Oggetti della scala</h2><p>Quattro gruppi, senza etichette ripetute.</p></div>
+        <section class="workspace">
+          <aside class="controls">
+            <div class="controls-intro"><span class="label">Configura</span><h2>Oggetti della scala</h2><p>Sezioni richiudibili e opzioni rettangolari.</p></div>
             <div data-controls></div>
           </aside>
           <section class="panel scale">
-            <div class="scale-head"><div><span class="label">Scala principale</span><h2>Confronto in kg CO₂e</h2><p>Le barre sono ordinate dal valore più alto al più basso.</p></div><div class="total"><span>Totale attivo</span><strong data-total-2>0 kg CO₂e</strong></div></div>
+            <div class="scale-head"><div><span class="label">Comparazione</span><h2>Impatto in kg CO₂e</h2><p>Gli elementi selezionati sono ordinati dal valore più alto al più basso.</p></div><div class="total"><span>Totale</span><strong data-total-2>0 kg CO₂e</strong></div></div>
             <div class="chart" data-chart></div>
           </section>
         </section>
-        <section class="panel sources" id="sources"><div class="section-title"><span class="label">Fonti</span><h2>Fonti usate per i calcoli</h2></div><div class="source-grid" data-sources></div></section>
       </main>
     </div>
     <script>
       (() => {
-        const sources = [
-          ['IPCC EFDB e fonti knowledge','IPCC, ISPRA, ICAO, DEFRA, AGF, JRC ed Ecoinvent.','https://www.ipcc-nggip.iges.or.jp/EFDB/'],
-          ['Scarborough et al.','Fattori dieta convertiti in settimana.','https://en.wikipedia.org/wiki/Low-carbon_diet'],
-          ['ICAO Carbon Calculator','Metodo per voli passeggero.','https://www.icao.int/environmental-protection/CarbonOffset/Pages/default.aspx'],
-          ['A Greener Future','Riferimento per eventi e festival.','https://www.agreenerfuture.com/']
-        ]
-        const diets = { vegan:['Vegana',20.2,'2,89 kg/giorno × 7'], vegetarian:['Vegetariana',26.7,'3,81 kg/giorno × 7'], flexitarian:['Flexitariana',32.7,'Proxy low-meat'], omnivore:['Onnivora',39.4,'Proxy medium-meat'], carnivore:['Carnivora',50.3,'Proxy high-meat'] }
-        const profiles = { local:['Locale',13], national:['Nazionale',78], international:['Internazionale',408] }
-        const state = { diet:'flexitarian', kappaDays:3, kappaProfile:'international', festivalDays:1, lowDays:1, on:new Set(['diet','gaming','climbing','trekking','kappa','flightIntercontinental']) }
-        const kg = v => `${v.toFixed(1).replace('.', ',')} kg CO₂e`
-        const itemData = () => {
-          const kappa = profiles[state.kappaProfile][1] + 12 * state.kappaDays
-          return [
-            ['diet',`Dieta ${diets[state.diet][0].toLowerCase()} — 1 settimana`,'Dieta',diets[state.diet][1],'Valore giornaliero × 7.'],
-            ['gaming','Weekend gaming online','Attività',2.4,'Proxy digitale.'],
-            ['climbing','Arrampicata','Attività',6.2,'Driver principale: trasporto.'],
-            ['trekking','Trekking','Attività',8.1,'Proxy trasporto regionale.'],
-            ['kappa',`Kappa FuturFestival — ${profiles[state.kappaProfile][0].toLowerCase()}, ${state.kappaDays} ${state.kappaDays===1?'giorno':'giorni'}`,'Festival',kappa,`${profiles[state.kappaProfile][1]} kg viaggio + 12 kg/giorno × ${state.kappaDays}.`],
-            ['festivalLocal',`Festival locale — ${state.festivalDays} ${state.festivalDays===1?'giorno':'giorni'}`,'Festival',6+12*state.festivalDays,'Mobilità breve + quota evento.'],
-            ['lowCarbonEvent',`Evento low-carbon — ${state.lowDays} ${state.lowDays===1?'giorno':'giorni'}`,'Festival',6*state.lowDays,'Scenario ottimizzato.'],
-            ['flightEurope','Volo europeo A/R','Viaggio',350,'Benchmark dimostrativo.'],
-            ['flightIntercontinental','Volo intercontinentale A/R','Viaggio',1800,'Benchmark dimostrativo.']
-          ]
+        const diets = {
+          vegan: ['Vegana', 20.2], vegetarian: ['Vegetariana', 26.7], flexitarian: ['Flexitariana', 32.7], omnivore: ['Onnivora', 39.4], carnivore: ['Carnivora', 50.3]
         }
-        const head = (n,title,copy) => `<header class="group-head"><span class="group-index">${n}</span><div><h3>${title}</h3><p>${copy}</p></div></header>`
-        const checkCard = (key,title,copy,value) => `<label class="card ${state.on.has(key)?'active':''}"><span class="toggle"><input type="checkbox" data-toggle="${key}" ${state.on.has(key)?'checked':''}/><span><strong>${title}</strong><span>${copy}</span></span><em>${kg(value)}</em></span></label>`
-        function render(){
-          const data = itemData()
-          const active = data.filter(x=>state.on.has(x[0])).sort((a,b)=>b[3]-a[3])
-          const total = active.reduce((s,x)=>s+x[3],0)
-          const max = Math.max(...active.map(x=>x[3]),1)
-          const kappa = data.find(x=>x[0]==='kappa')
+        const profiles = { local: ['Locale', 13], national: ['Nazionale', 78], international: ['Internazionale', 408] }
+        const state = { diet: 'flexitarian', kappaDays: 3, profile: 'international', festivalDays: 1, lowDays: 1, on: new Set(['diet','gaming','climbing','trekking','kappa','flightIntercontinental']) }
+        const kg = value => `${value.toFixed(1).replace('.', ',')} kg CO₂e`
+        const items = () => [
+          ['diet', `Dieta ${diets[state.diet][0].toLowerCase()} — 1 settimana`, diets[state.diet][1], 'Impronta alimentare settimanale.'],
+          ['gaming', 'Weekend gaming online', 2.4, 'Sessioni, dispositivo, schermo e rete.'],
+          ['climbing', 'Arrampicata', 6.2, 'Giornata in palestra o falesia vicina.'],
+          ['trekking', 'Trekking', 8.1, 'Escursione con spostamento regionale.'],
+          ['kappa', `Kappa FuturFestival — ${state.kappaDays} ${state.kappaDays === 1 ? 'giorno' : 'giorni'}, ${profiles[state.profile][0].toLowerCase()}`, profiles[state.profile][1] + 12 * state.kappaDays, 'Viaggio più quota evento giornaliera.'],
+          ['festivalLocal', `Festival locale — ${state.festivalDays} ${state.festivalDays === 1 ? 'giorno' : 'giorni'}`, 6 + 12 * state.festivalDays, 'Mobilità breve più quota evento.'],
+          ['lowCarbonEvent', `Evento low-carbon — ${state.lowDays} ${state.lowDays === 1 ? 'giorno' : 'giorni'}`, 6 * state.lowDays, 'Scenario ottimizzato.'],
+          ['flightEurope', 'Volo europeo A/R', 350, 'Benchmark breve-medio.'],
+          ['flightIntercontinental', 'Volo intercontinentale A/R', 1800, 'Benchmark alto.']
+        ]
+        const row = (key, title, copy, value) => `<label class="select-row ${state.on.has(key) ? 'active' : ''}"><input type="checkbox" data-toggle="${key}" ${state.on.has(key) ? 'checked' : ''}><span><strong>${title}</strong><small>${copy}</small></span><em>${kg(value)}</em></label>`
+        const button = (attr, value, label, active, copy = '') => `<button class="choice" ${attr}="${value}" aria-pressed="${active}"><strong>${label}</strong>${copy ? `<small>${copy}</small>` : ''}</button>`
+        const menu = (title, subtitle, status, body) => `<details class="menu"><summary><span class="menu-copy"><strong>${title}</strong><small>${subtitle}</small></span><span class="status">${status}</span><span class="chevron">⌄</span></summary><div class="menu-content">${body}</div></details>`
+        function render() {
+          const data = items()
+          const active = data.filter(item => state.on.has(item[0])).sort((a,b) => b[2] - a[2])
+          const total = active.reduce((sum,item) => sum + item[2], 0)
+          const max = Math.max(...active.map(item => item[2]), 1)
+          const dietButtons = Object.entries(diets).map(([key,value]) => button('data-diet', key, value[0], state.diet === key, `${kg(value[1])} / settimana`)).join('')
+          const activityCount = ['gaming','climbing','trekking'].filter(key => state.on.has(key)).length
+          const eventCount = ['kappa','festivalLocal','lowCarbonEvent'].filter(key => state.on.has(key)).length
+          const travelCount = ['flightEurope','flightIntercontinental'].filter(key => state.on.has(key)).length
+          const kappaValue = profiles[state.profile][1] + 12 * state.kappaDays
           document.querySelector('[data-total]').textContent = kg(total)
           document.querySelector('[data-total-2]').textContent = kg(total)
-          document.querySelector('[data-count]').textContent = `${active.length} elementi attivi.`
-          document.querySelector('[data-controls]').innerHTML = `
-            <section class="object-group">${head('01','Dieta','Impronta alimentare di una settimana.')}<article class="card ${state.on.has('diet')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="diet" ${state.on.has('diet')?'checked':''}/><span><strong>${diets[state.diet][0]}</strong><span>1 settimana · ${diets[state.diet][2]}</span></span><em>${kg(diets[state.diet][1])}</em></label><div class="segmented">${Object.entries(diets).map(([k,v])=>`<button data-diet="${k}" aria-pressed="${state.diet===k}">${v[0]}</button>`).join('')}</div></article></section>
-            <section class="object-group">${head('02','Attività','Esperienze quotidiane e outdoor.')}<div class="object-grid">${checkCard('gaming','Weekend gaming online','Sessioni, dispositivo, schermo e rete.',2.4)}${checkCard('climbing','Arrampicata','Giornata in palestra o falesia.',6.2)}${checkCard('trekking','Trekking','Escursione con spostamento regionale.',8.1)}</div></section>
-            <section class="object-group">${head('03','Festival ed eventi','Durata e provenienza modificano il risultato.')}<article class="card ${state.on.has('kappa')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="kappa" ${state.on.has('kappa')?'checked':''}/><span><strong>Kappa FuturFestival</strong><span>${state.kappaDays} ${state.kappaDays===1?'giorno':'giorni'} · partecipante ${profiles[state.kappaProfile][0].toLowerCase()}</span></span><em>${kg(kappa[3])}</em></label><div class="option-grid"><div class="option-block"><small>Durata</small><div class="segmented"><button data-kappa-days="1" aria-pressed="${state.kappaDays===1}">1 giorno</button><button data-kappa-days="3" aria-pressed="${state.kappaDays===3}">3 giorni</button></div></div><div class="option-block"><small>Provenienza</small><div class="segmented three">${Object.entries(profiles).map(([k,v])=>`<button data-profile="${k}" aria-pressed="${state.kappaProfile===k}">${v[0]}</button>`).join('')}</div></div></div><p class="micro">${kappa[4]}</p></article><div class="object-grid">${checkCard('festivalLocal','Festival locale',`${state.festivalDays} ${state.festivalDays===1?'giorno':'giorni'} · mobilità breve`,6+12*state.festivalDays)}${checkCard('lowCarbonEvent','Evento low-carbon',`${state.lowDays} ${state.lowDays===1?'giorno':'giorni'} · scenario ottimizzato`,6*state.lowDays)}</div></section>
-            <section class="object-group">${head('04','Viaggi benchmark','Riferimenti di scala separati dagli eventi.')}<div class="object-grid">${checkCard('flightEurope','Volo europeo A/R','Benchmark breve-medio.',350)}${checkCard('flightIntercontinental','Volo intercontinentale A/R','Benchmark alto.',1800)}</div></section>`
-          document.querySelector('[data-chart]').innerHTML = active.map(x=>`<article class="row"><div class="row-copy"><small>${x[2]}</small><strong>${x[1]}</strong><span>${x[4]}</span></div><div><div class="value">${kg(x[3])}</div><div class="track"><div class="fill" style="width:${Math.max(x[3]/max*100,2)}%"></div></div></div></article>`).join('')
-          document.querySelector('[data-sources]').innerHTML = sources.map(s=>`<article class="source"><h3>${s[0]}</h3><p>${s[1]}</p><a href="${s[2]}" target="_blank" rel="noreferrer">Apri fonte</a></article>`).join('')
-          document.querySelectorAll('[data-toggle]').forEach(el=>el.onchange=()=>{const k=el.dataset.toggle;el.checked?state.on.add(k):state.on.delete(k);render()})
-          document.querySelectorAll('[data-diet]').forEach(el=>el.onclick=()=>{state.diet=el.dataset.diet;render()})
-          document.querySelectorAll('[data-kappa-days]').forEach(el=>el.onclick=()=>{state.kappaDays=Number(el.dataset.kappaDays);render()})
-          document.querySelectorAll('[data-profile]').forEach(el=>el.onclick=()=>{state.kappaProfile=el.dataset.profile;render()})
+          document.querySelector('[data-count]').textContent = `${active.length} elementi nella comparazione.`
+          document.querySelector('[data-controls]').innerHTML = [
+            menu('Dieta', `${diets[state.diet][0]} · ${kg(diets[state.diet][1])}`, state.on.has('diet') ? 'Inclusa' : 'Esclusa', `${row('diet','Includi la dieta','Periodo: una settimana',diets[state.diet][1])}<div class="choice-grid">${dietButtons}</div>`),
+            menu('Attività', 'Gaming, arrampicata e trekking', `${activityCount} attive`, `${row('gaming','Weekend gaming online','Sessioni, dispositivo, schermo e rete.',2.4)}${row('climbing','Arrampicata','Giornata in palestra o falesia.',6.2)}${row('trekking','Trekking','Escursione con spostamento regionale.',8.1)}`),
+            menu('Festival ed eventi', 'Kappa, locale e low-carbon', `${eventCount} attivi`, `<article class="config">${row('kappa','Kappa FuturFestival',`${state.kappaDays} ${state.kappaDays === 1 ? 'giorno' : 'giorni'} · ${profiles[state.profile][0]}`,kappaValue)}<span class="config-label">Durata</span><div class="choice-grid">${button('data-kappa-days','1','1 giorno',state.kappaDays===1)}${button('data-kappa-days','3','3 giorni',state.kappaDays===3)}</div><span class="config-label">Provenienza</span><div class="choice-grid three">${Object.entries(profiles).map(([key,value]) => button('data-profile',key,value[0],state.profile===key)).join('')}</div></article><article class="config">${row('festivalLocal','Festival locale',`${state.festivalDays} ${state.festivalDays===1?'giorno':'giorni'} · mobilità breve`,6+12*state.festivalDays)}<div class="choice-grid">${button('data-festival-days','1','1 giorno',state.festivalDays===1)}${button('data-festival-days','3','3 giorni',state.festivalDays===3)}</div></article><article class="config">${row('lowCarbonEvent','Evento low-carbon',`${state.lowDays} ${state.lowDays===1?'giorno':'giorni'} · scenario ottimizzato`,6*state.lowDays)}<div class="choice-grid">${button('data-low-days','1','1 giorno',state.lowDays===1)}${button('data-low-days','3','3 giorni',state.lowDays===3)}</div></article>`),
+            menu('Viaggi benchmark', 'Voli separati dagli eventi', `${travelCount} attivi`, `${row('flightEurope','Volo europeo A/R','Benchmark breve-medio.',350)}${row('flightIntercontinental','Volo intercontinentale A/R','Benchmark alto.',1800)}`)
+          ].join('')
+          document.querySelector('[data-chart]').innerHTML = active.length ? active.map(item => `<article class="row"><div class="row-copy"><strong>${item[1]}</strong><span>${item[3]}</span></div><div class="value">${kg(item[2])}</div><div class="track"><div class="fill" style="width:${Math.max(item[2]/max*100,2)}%"></div></div><div class="note">Valore didattico o benchmark.</div></article>`).join('') : '<p>Nessun oggetto selezionato.</p>'
+          document.querySelectorAll('[data-toggle]').forEach(element => element.addEventListener('change', () => { const key = element.dataset.toggle; element.checked ? state.on.add(key) : state.on.delete(key); render() }))
+          document.querySelectorAll('[data-diet]').forEach(element => element.addEventListener('click', () => { state.diet = element.dataset.diet; render() }))
+          document.querySelectorAll('[data-kappa-days]').forEach(element => element.addEventListener('click', () => { state.kappaDays = Number(element.dataset.kappaDays); render() }))
+          document.querySelectorAll('[data-profile]').forEach(element => element.addEventListener('click', () => { state.profile = element.dataset.profile; render() }))
+          document.querySelectorAll('[data-festival-days]').forEach(element => element.addEventListener('click', () => { state.festivalDays = Number(element.dataset.festivalDays); render() }))
+          document.querySelectorAll('[data-low-days]').forEach(element => element.addEventListener('click', () => { state.lowDays = Number(element.dataset.lowDays); render() }))
         }
         render()
       })()
