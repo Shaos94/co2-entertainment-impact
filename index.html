@@ -9,6 +9,7 @@
       content="Scala didattica desktop per confrontare dieta, attività, festival, Kappa FuturFestival e viaggi in kg CO₂e."
     />
     <style>
+      * { box-sizing: border-box; }
       body { margin: 0; min-width: 320px; background: linear-gradient(180deg, #faf7ef 0%, #eee6d5 100%); color: #171f1a; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
       button, input { font: inherit; }
       .fallback { width: min(1440px, calc(100% - 56px)); margin: 0 auto; padding: 44px 0 72px; }
@@ -19,28 +20,38 @@
       h2 { font-size: clamp(24px, 2vw, 36px); line-height: 1.02; letter-spacing: -.045em; }
       p, small, span { line-height: 1.52; } p, small { color: #60665f; }
       .hero p { max-width: 760px; margin-top: 18px; font-size: 17px; }
-      .panel, .card, .source { border: 1px solid rgba(23,31,26,.1); border-radius: 32px; background: rgba(255,255,255,.58); box-shadow: 0 24px 70px rgba(23,31,26,.06); }
+      .panel, .source { border: 1px solid rgba(23,31,26,.1); border-radius: 32px; background: rgba(255,255,255,.58); box-shadow: 0 24px 70px rgba(23,31,26,.06); }
       .summary { display: grid; gap: 12px; padding: 24px; }
       .summary strong { font-size: clamp(32px, 3.7vw, 56px); letter-spacing: -.07em; line-height: .95; }
-      .grid { display: grid; grid-template-columns: minmax(400px,.74fr) minmax(0,1.44fr); gap: 18px; align-items: start; }
+      .grid { display: grid; grid-template-columns: minmax(430px,.82fr) minmax(0,1.38fr); gap: 18px; align-items: start; }
       .controls, .scale, .sources { padding: 22px; }
-      .controls { display: grid; gap: 12px; }
-      .section-title { display: grid; gap: 10px; margin-bottom: 18px; }
-      .card { border-radius: 24px; padding: 14px; }
-      .card.active { border-color: rgba(47,95,53,.42); background: rgba(255,255,255,.76); }
-      .toggle { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 12px; align-items: start; cursor: pointer; }
-      .toggle input { width: 20px; height: 20px; margin-top: 3px; accent-color: #2f5f35; }
+      .controls { display: grid; gap: 0; }
+      .section-title { display: grid; gap: 10px; margin-bottom: 2px; }
+      .object-group { display: grid; gap: 12px; padding: 22px 0; border-top: 1px solid rgba(23,31,26,.09); }
+      .object-group:first-of-type { border-top: 0; padding-top: 18px; }
+      .group-head { display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 10px; }
+      .group-head > div { display: grid; gap: 2px; }
+      .group-head h3 { font-size: 16px; }
+      .group-head p { font-size: 13px; }
+      .group-index { display: inline-grid; place-items: center; width: 30px; height: 30px; border: 1px solid rgba(23,31,26,.11); border-radius: 999px; color: #2f5f35; font-size: 11px; font-weight: 900; }
+      .object-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+      .card { min-width: 0; border: 1px solid rgba(23,31,26,.09); border-radius: 20px; background: rgba(255,255,255,.5); padding: 13px; }
+      .card.active { border-color: rgba(47,95,53,.42); background: rgba(255,255,255,.82); }
+      .toggle { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 11px; align-items: start; cursor: pointer; }
+      .toggle input { width: 19px; height: 19px; margin-top: 3px; accent-color: #2f5f35; }
       .toggle > span { display: grid; min-width: 0; gap: 3px; }
-      .toggle small, .row small { color: #2f5f35; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-      .toggle strong, .row strong { font-weight: 950; letter-spacing: -.025em; overflow-wrap: anywhere; }
-      .toggle em { font-style: normal; font-weight: 950; white-space: nowrap; }
-      .segmented { display: grid; gap: 7px; margin-top: 12px; }
-      .segmented.diets { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .segmented.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .segmented.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .segmented button { min-width: 0; min-height: 38px; border: 1px solid rgba(23,31,26,.1); border-radius: 999px; background: rgba(255,255,255,.72); color: #4f5750; font-size: 13px; font-weight: 850; line-height: 1.2; overflow-wrap: anywhere; padding: 9px 11px; white-space: normal; cursor: pointer; }
+      .toggle strong { font-size: 15px; font-weight: 900; letter-spacing: -.025em; overflow-wrap: anywhere; }
+      .toggle span span, .micro { color: #60665f; font-size: 13px; }
+      .toggle em { font-size: 14px; font-style: normal; font-weight: 950; white-space: nowrap; }
+      .option-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 10px; margin-top: 12px; }
+      .option-block { display: grid; gap: 7px; }
+      .option-block small { color: #2f5f35; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+      .segmented { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; margin-top: 12px; }
+      .option-block .segmented { margin-top: 0; }
+      .segmented.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .segmented button { min-width: 0; min-height: 38px; border: 1px solid rgba(23,31,26,.1); border-radius: 999px; background: rgba(255,255,255,.72); color: #4f5750; font-size: 13px; font-weight: 850; line-height: 1.2; overflow-wrap: anywhere; padding: 9px 10px; white-space: normal; cursor: pointer; }
       .segmented button[aria-pressed="true"] { border-color: #2f5f35; background: #171f1a; color: #faf7ef; }
-      .micro { margin-top: 12px; color: #60665f; font-size: 14px; }
+      .micro { margin-top: 12px; }
       .scale { display: grid; gap: 18px; }
       .scale-head { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: start; }
       .total { min-width: 220px; border-radius: 26px; background: #171f1a; color: #faf7ef; padding: 18px; }
@@ -49,16 +60,17 @@
       .chart { display: grid; gap: 10px; }
       .row { display: grid; grid-template-columns: minmax(260px,.34fr) minmax(0,.66fr); gap: 18px; align-items: center; border: 1px solid rgba(23,31,26,.08); border-radius: 22px; background: rgba(255,255,255,.54); padding: 14px; }
       .row-copy { display: grid; gap: 3px; }
+      .row-copy small { color: #2f5f35; font-weight: 900; text-transform: uppercase; }
       .row-copy span { color: #60665f; font-size: 14px; }
       .value { font-weight: 950; text-align: right; }
       .track { width: 100%; height: 14px; overflow: hidden; border-radius: 999px; background: rgba(23,31,26,.08); margin: 7px 0; }
       .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #2f5f35, #d6a14d); }
       .sources { margin-top: 18px; }
-      .source-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
+      .source-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
       .source { display: grid; gap: 10px; border-radius: 22px; padding: 16px; }
       .source a { color: #2f5f35; font-weight: 900; }
       @media (max-width:1120px){ .fallback{width:min(100% - 32px,960px)} .hero,.grid,.scale-head,.source-grid{grid-template-columns:1fr} .row{grid-template-columns:1fr} .value{text-align:left} }
-      @media (max-width:620px){ .segmented.diets,.segmented.three{grid-template-columns:1fr} }
+      @media (max-width:720px){ .object-grid,.option-grid,.segmented.three{grid-template-columns:1fr} .toggle{grid-template-columns:auto 1fr} .toggle em{grid-column:2} }
     </style>
   </head>
   <body>
@@ -68,13 +80,13 @@
           <div>
             <span class="eyebrow">CO₂e cultural scale</span>
             <h1>Una scala pulita per leggere impatti molto diversi.</h1>
-            <p>Fallback statico desktop: se la build React non è ancora servita da GitHub Pages, questa versione mantiene Kappa configurabile per durata e profilo.</p>
+            <p>Seleziona gli oggetti, configura gli eventi e confronta tutto su una sola scala.</p>
           </div>
           <aside class="panel summary"><span class="label">Totale scala</span><strong data-total>0 kg CO₂e</strong><p data-count></p></aside>
         </section>
         <section class="grid">
           <aside class="panel controls">
-            <div class="section-title"><span class="label">Selezione</span><h2>Oggetti della scala</h2><p>Ogni card contiene le proprie opzioni.</p></div>
+            <div class="section-title"><span class="label">Selezione</span><h2>Oggetti della scala</h2><p>Quattro gruppi, senza etichette ripetute.</p></div>
             <div data-controls></div>
           </aside>
           <section class="panel scale">
@@ -82,20 +94,20 @@
             <div class="chart" data-chart></div>
           </section>
         </section>
-        <section class="panel sources" id="sources"><div class="section-title"><span class="label">Fonti</span><h2>Fonti usate per i calcoli</h2><p>Fonti metodologiche e benchmark usati nel prototipo.</p></div><div class="source-grid" data-sources></div></section>
+        <section class="panel sources" id="sources"><div class="section-title"><span class="label">Fonti</span><h2>Fonti usate per i calcoli</h2></div><div class="source-grid" data-sources></div></section>
       </main>
     </div>
     <script>
       (() => {
         const sources = [
-          ['Knowledge interna — lista fonti utili CO₂e','IPCC EFDB, Our World in Data, ISPRA, ICAO, DEFRA, EcoPassenger, AGF, Vision:2025, JRC, Ecoinvent.','https://www.ipcc-nggip.iges.or.jp/EFDB/'],
-          ['Scarborough et al. — impronta diete','Fattori dieta in kg CO₂e/giorno convertiti in settimana.','https://en.wikipedia.org/wiki/Low-carbon_diet'],
-          ['ICAO Carbon Emissions Calculator','Metodo per voli passeggero e benchmark di viaggio.','https://www.icao.int/environmental-protection/CarbonOffset/Pages/default.aspx'],
-          ['A Greener Future / AGF','Riferimento per eventi e festival.','https://www.agreenerfuture.com/']
+          ['IPCC EFDB e fonti knowledge','IPCC, ISPRA, ICAO, DEFRA, AGF, JRC ed Ecoinvent.','https://www.ipcc-nggip.iges.or.jp/EFDB/'],
+          ['Scarborough et al.','Fattori dieta convertiti in settimana.','https://en.wikipedia.org/wiki/Low-carbon_diet'],
+          ['ICAO Carbon Calculator','Metodo per voli passeggero.','https://www.icao.int/environmental-protection/CarbonOffset/Pages/default.aspx'],
+          ['A Greener Future','Riferimento per eventi e festival.','https://www.agreenerfuture.com/']
         ]
-        const diets = { vegan:['Vegana',20.2], vegetarian:['Vegetariana',26.7], flexitarian:['Flexitariana',32.7], omnivore:['Onnivora',39.4], carnivore:['Carnivora',50.3] }
-        const profiles = { local:['Locale',13,'Torino o area vicina.'], national:['Nazionale',78,'Italia, treno/auto + evento.'], international:['Internazionale',408,'Estero con volo europeo + evento.'] }
-        const state = { diet:'flexitarian', kappaDays:3, kappaProfile:'international', on:new Set(['diet','gaming','climbing','trekking','kappa','flightIntercontinental']) }
+        const diets = { vegan:['Vegana',20.2,'2,89 kg/giorno × 7'], vegetarian:['Vegetariana',26.7,'3,81 kg/giorno × 7'], flexitarian:['Flexitariana',32.7,'Proxy low-meat'], omnivore:['Onnivora',39.4,'Proxy medium-meat'], carnivore:['Carnivora',50.3,'Proxy high-meat'] }
+        const profiles = { local:['Locale',13], national:['Nazionale',78], international:['Internazionale',408] }
+        const state = { diet:'flexitarian', kappaDays:3, kappaProfile:'international', festivalDays:1, lowDays:1, on:new Set(['diet','gaming','climbing','trekking','kappa','flightIntercontinental']) }
         const kg = v => `${v.toFixed(1).replace('.', ',')} kg CO₂e`
         const itemData = () => {
           const kappa = profiles[state.kappaProfile][1] + 12 * state.kappaDays
@@ -104,32 +116,35 @@
             ['gaming','Weekend gaming online','Attività',2.4,'Proxy digitale.'],
             ['climbing','Arrampicata','Attività',6.2,'Driver principale: trasporto.'],
             ['trekking','Trekking','Attività',8.1,'Proxy trasporto regionale.'],
-            ['kappa',`Kappa FuturFestival — ${profiles[state.kappaProfile][0].toLowerCase()}, ${state.kappaDays} ${state.kappaDays === 1 ? 'giorno':'giorni'}`,'Festival',kappa,`${profiles[state.kappaProfile][1]} kg viaggio + 12 kg/giorno × ${state.kappaDays}.`],
-            ['festivalLocal','Festival locale','Festival',18,'6 kg viaggio + 12 kg/giorno.'],
-            ['lowCarbonEvent','Evento low-carbon','Festival',6,'Scenario didattico a vincoli forti.'],
+            ['kappa',`Kappa FuturFestival — ${profiles[state.kappaProfile][0].toLowerCase()}, ${state.kappaDays} ${state.kappaDays===1?'giorno':'giorni'}`,'Festival',kappa,`${profiles[state.kappaProfile][1]} kg viaggio + 12 kg/giorno × ${state.kappaDays}.`],
+            ['festivalLocal',`Festival locale — ${state.festivalDays} ${state.festivalDays===1?'giorno':'giorni'}`,'Festival',6+12*state.festivalDays,'Mobilità breve + quota evento.'],
+            ['lowCarbonEvent',`Evento low-carbon — ${state.lowDays} ${state.lowDays===1?'giorno':'giorni'}`,'Festival',6*state.lowDays,'Scenario ottimizzato.'],
             ['flightEurope','Volo europeo A/R','Viaggio',350,'Benchmark dimostrativo.'],
             ['flightIntercontinental','Volo intercontinentale A/R','Viaggio',1800,'Benchmark dimostrativo.']
           ]
         }
+        const head = (n,title,copy) => `<header class="group-head"><span class="group-index">${n}</span><div><h3>${title}</h3><p>${copy}</p></div></header>`
+        const checkCard = (key,title,copy,value) => `<label class="card ${state.on.has(key)?'active':''}"><span class="toggle"><input type="checkbox" data-toggle="${key}" ${state.on.has(key)?'checked':''}/><span><strong>${title}</strong><span>${copy}</span></span><em>${kg(value)}</em></span></label>`
         function render(){
           const data = itemData()
-          const active = data.filter(x => state.on.has(x[0])).sort((a,b)=>b[3]-a[3])
+          const active = data.filter(x=>state.on.has(x[0])).sort((a,b)=>b[3]-a[3])
           const total = active.reduce((s,x)=>s+x[3],0)
           const max = Math.max(...active.map(x=>x[3]),1)
+          const kappa = data.find(x=>x[0]==='kappa')
           document.querySelector('[data-total]').textContent = kg(total)
           document.querySelector('[data-total-2]').textContent = kg(total)
-          document.querySelector('[data-count]').textContent = `${active.length} elementi attivi. Kappa: ${state.kappaDays} ${state.kappaDays === 1 ? 'giorno':'giorni'}.`
+          document.querySelector('[data-count]').textContent = `${active.length} elementi attivi.`
           document.querySelector('[data-controls]').innerHTML = `
-            <section class="card ${state.on.has('diet')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="diet" ${state.on.has('diet')?'checked':''}/><span><small>Dieta</small><strong>Dieta ${diets[state.diet][0].toLowerCase()} — 1 settimana</strong></span><em>${kg(diets[state.diet][1])}</em></label><div class="segmented diets">${Object.entries(diets).map(([k,v])=>`<button data-diet="${k}" aria-pressed="${state.diet===k}">${v[0]}</button>`).join('')}</div></section>
-            ${['gaming','climbing','trekking'].map(k=>{const x=data.find(i=>i[0]===k);return `<section class="card ${state.on.has(k)?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="${k}" ${state.on.has(k)?'checked':''}/><span><small>${x[2]}</small><strong>${x[1]}</strong></span><em>${kg(x[3])}</em></label></section>`}).join('')}
-            <section class="card ${state.on.has('kappa')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="kappa" ${state.on.has('kappa')?'checked':''}/><span><small>Kappa FuturFestival</small><strong>${data.find(x=>x[0]==='kappa')[1]}</strong><span>${profiles[state.kappaProfile][2]}</span></span><em>${kg(data.find(x=>x[0]==='kappa')[3])}</em></label><div class="segmented two"><button data-days="1" aria-pressed="${state.kappaDays===1}">1 giorno</button><button data-days="3" aria-pressed="${state.kappaDays===3}">3 giorni</button></div><div class="segmented three">${Object.entries(profiles).map(([k,v])=>`<button data-profile="${k}" aria-pressed="${state.kappaProfile===k}">${v[0]}</button>`).join('')}</div><p class="micro">${data.find(x=>x[0]==='kappa')[4]}</p></section>
-            ${['festivalLocal','lowCarbonEvent','flightEurope','flightIntercontinental'].map(k=>{const x=data.find(i=>i[0]===k);return `<section class="card ${state.on.has(k)?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="${k}" ${state.on.has(k)?'checked':''}/><span><small>${x[2]}</small><strong>${x[1]}</strong></span><em>${kg(x[3])}</em></label></section>`}).join('')}`
+            <section class="object-group">${head('01','Dieta','Impronta alimentare di una settimana.')}<article class="card ${state.on.has('diet')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="diet" ${state.on.has('diet')?'checked':''}/><span><strong>${diets[state.diet][0]}</strong><span>1 settimana · ${diets[state.diet][2]}</span></span><em>${kg(diets[state.diet][1])}</em></label><div class="segmented">${Object.entries(diets).map(([k,v])=>`<button data-diet="${k}" aria-pressed="${state.diet===k}">${v[0]}</button>`).join('')}</div></article></section>
+            <section class="object-group">${head('02','Attività','Esperienze quotidiane e outdoor.')}<div class="object-grid">${checkCard('gaming','Weekend gaming online','Sessioni, dispositivo, schermo e rete.',2.4)}${checkCard('climbing','Arrampicata','Giornata in palestra o falesia.',6.2)}${checkCard('trekking','Trekking','Escursione con spostamento regionale.',8.1)}</div></section>
+            <section class="object-group">${head('03','Festival ed eventi','Durata e provenienza modificano il risultato.')}<article class="card ${state.on.has('kappa')?'active':''}"><label class="toggle"><input type="checkbox" data-toggle="kappa" ${state.on.has('kappa')?'checked':''}/><span><strong>Kappa FuturFestival</strong><span>${state.kappaDays} ${state.kappaDays===1?'giorno':'giorni'} · partecipante ${profiles[state.kappaProfile][0].toLowerCase()}</span></span><em>${kg(kappa[3])}</em></label><div class="option-grid"><div class="option-block"><small>Durata</small><div class="segmented"><button data-kappa-days="1" aria-pressed="${state.kappaDays===1}">1 giorno</button><button data-kappa-days="3" aria-pressed="${state.kappaDays===3}">3 giorni</button></div></div><div class="option-block"><small>Provenienza</small><div class="segmented three">${Object.entries(profiles).map(([k,v])=>`<button data-profile="${k}" aria-pressed="${state.kappaProfile===k}">${v[0]}</button>`).join('')}</div></div></div><p class="micro">${kappa[4]}</p></article><div class="object-grid">${checkCard('festivalLocal','Festival locale',`${state.festivalDays} ${state.festivalDays===1?'giorno':'giorni'} · mobilità breve`,6+12*state.festivalDays)}${checkCard('lowCarbonEvent','Evento low-carbon',`${state.lowDays} ${state.lowDays===1?'giorno':'giorni'} · scenario ottimizzato`,6*state.lowDays)}</div></section>
+            <section class="object-group">${head('04','Viaggi benchmark','Riferimenti di scala separati dagli eventi.')}<div class="object-grid">${checkCard('flightEurope','Volo europeo A/R','Benchmark breve-medio.',350)}${checkCard('flightIntercontinental','Volo intercontinentale A/R','Benchmark alto.',1800)}</div></section>`
           document.querySelector('[data-chart]').innerHTML = active.map(x=>`<article class="row"><div class="row-copy"><small>${x[2]}</small><strong>${x[1]}</strong><span>${x[4]}</span></div><div><div class="value">${kg(x[3])}</div><div class="track"><div class="fill" style="width:${Math.max(x[3]/max*100,2)}%"></div></div></div></article>`).join('')
           document.querySelector('[data-sources]').innerHTML = sources.map(s=>`<article class="source"><h3>${s[0]}</h3><p>${s[1]}</p><a href="${s[2]}" target="_blank" rel="noreferrer">Apri fonte</a></article>`).join('')
-          document.querySelectorAll('[data-toggle]').forEach(el=>el.onchange=()=>{const k=el.dataset.toggle; el.checked?state.on.add(k):state.on.delete(k); render()})
-          document.querySelectorAll('[data-diet]').forEach(el=>el.onclick=()=>{state.diet=el.dataset.diet; render()})
-          document.querySelectorAll('[data-days]').forEach(el=>el.onclick=()=>{state.kappaDays=Number(el.dataset.days); render()})
-          document.querySelectorAll('[data-profile]').forEach(el=>el.onclick=()=>{state.kappaProfile=el.dataset.profile; render()})
+          document.querySelectorAll('[data-toggle]').forEach(el=>el.onchange=()=>{const k=el.dataset.toggle;el.checked?state.on.add(k):state.on.delete(k);render()})
+          document.querySelectorAll('[data-diet]').forEach(el=>el.onclick=()=>{state.diet=el.dataset.diet;render()})
+          document.querySelectorAll('[data-kappa-days]').forEach(el=>el.onclick=()=>{state.kappaDays=Number(el.dataset.kappaDays);render()})
+          document.querySelectorAll('[data-profile]').forEach(el=>el.onclick=()=>{state.kappaProfile=el.dataset.profile;render()})
         }
         render()
       })()
