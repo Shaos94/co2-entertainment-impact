@@ -30,15 +30,15 @@
       .card.active { border-color: rgba(47,95,53,.42); background: rgba(255,255,255,.76); }
       .toggle { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 12px; align-items: start; cursor: pointer; }
       .toggle input { width: 20px; height: 20px; margin-top: 3px; accent-color: #2f5f35; }
-      .toggle > span { display: grid; gap: 3px; }
+      .toggle > span { display: grid; min-width: 0; gap: 3px; }
       .toggle small, .row small { color: #2f5f35; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-      .toggle strong, .row strong { font-weight: 950; letter-spacing: -.025em; }
+      .toggle strong, .row strong { font-weight: 950; letter-spacing: -.025em; overflow-wrap: anywhere; }
       .toggle em { font-style: normal; font-weight: 950; white-space: nowrap; }
-      .segmented { display: grid; gap: 6px; margin-top: 12px; }
-      .segmented.diets { grid-template-columns: repeat(5, minmax(0,1fr)); }
+      .segmented { display: grid; gap: 7px; margin-top: 12px; }
+      .segmented.diets { grid-template-columns: repeat(2, minmax(0,1fr)); }
       .segmented.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
       .segmented.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .segmented button { border: 1px solid rgba(23,31,26,.1); border-radius: 999px; background: rgba(255,255,255,.72); color: #4f5750; font-size: 13px; font-weight: 850; padding: 8px 9px; cursor: pointer; }
+      .segmented button { min-width: 0; min-height: 38px; border: 1px solid rgba(23,31,26,.1); border-radius: 999px; background: rgba(255,255,255,.72); color: #4f5750; font-size: 13px; font-weight: 850; line-height: 1.2; overflow-wrap: anywhere; padding: 9px 11px; white-space: normal; cursor: pointer; }
       .segmented button[aria-pressed="true"] { border-color: #2f5f35; background: #171f1a; color: #faf7ef; }
       .micro { margin-top: 12px; color: #60665f; font-size: 14px; }
       .scale { display: grid; gap: 18px; }
@@ -58,6 +58,7 @@
       .source { display: grid; gap: 10px; border-radius: 22px; padding: 16px; }
       .source a { color: #2f5f35; font-weight: 900; }
       @media (max-width:1120px){ .fallback{width:min(100% - 32px,960px)} .hero,.grid,.scale-head,.source-grid{grid-template-columns:1fr} .row{grid-template-columns:1fr} .value{text-align:left} }
+      @media (max-width:620px){ .segmented.diets,.segmented.three{grid-template-columns:1fr} }
     </style>
   </head>
   <body>
